@@ -1,0 +1,296 @@
+diff --git a/frotz/src/common/frotz.h b/frotz/src/common/frotz.h
+index df2f84c..c73e767 100644
+--- a/frotz/src/common/frotz.h
++++ b/frotz/src/common/frotz.h
+@@ -14,7 +14,10 @@
+ 
+ #ifndef __UNIX_PORT_FILE
+ #include <signal.h>
+-typedef int bool;
++
++#include <stdbool.h>
++//typedef int bool;
++
+ #endif /* __UNIX_PORT_FILE */
+ 
+ #include <stdio.h>
+@@ -789,18 +792,18 @@ void 	os_display_string (const zchar *);
+ void 	os_draw_picture (int, int, int);
+ void 	os_erase_area (int, int, int, int, int);
+ void 	os_fatal (const char *, ...);
+-void 	os_finish_with_sample ();
++void 	os_finish_with_sample (int);
+ int  	os_font_data (int, int *, int *);
+ void 	os_init_screen (void);
+ void	os_init_sound (void);
+ void 	os_more_prompt (void);
+ int  	os_peek_colour (void);
+-int  	os_picture_data (int, int *, int *);
++bool  	os_picture_data (int, int *, int *);
+ void 	os_prepare_sample (int);
+ void 	os_process_arguments (int, char *[]);
+ int	os_random_seed (void);
+ int  	os_read_file_name (char *, const char *, int);
+-zchar	os_read_key (int, int);
++zchar	os_read_key (int, bool);
+ zchar	os_read_line (int, zchar *, int, int, int);
+ void 	os_reset_screen (void);
+ void 	os_restart_game (int);
+@@ -810,7 +813,7 @@ void 	os_set_cursor (int, int);
+ void 	os_set_font (int);
+ void 	os_set_text_style (int);
+ void 	os_start_sample (int, int, int, zword);
+-void 	os_stop_sample ();
++void 	os_stop_sample (int);
+ int  	os_string_width (const zchar *);
+ void	os_init_setup (void);
+ void 	os_warn (const char *, ...);
+diff --git a/frotz/src/games/anchor.c b/frotz/src/games/anchor.c
+index 63f932f..bf19e8b 100644
+--- a/frotz/src/games/anchor.c
++++ b/frotz/src/games/anchor.c
+@@ -40,7 +40,7 @@ zword* anchor_ram_addrs(int *n) {
+ 
+ char** anchor_intro_actions(int *n) {
+   *n = 3;
+-  return anchor_intro;
++  return (char **)anchor_intro;
+ }
+ 
+ char* anchor_clean_observation(char* obs) {
+diff --git a/frotz/src/games/curses.c b/frotz/src/games/curses.c
+index 9b704d1..7c39bee 100644
+--- a/frotz/src/games/curses.c
++++ b/frotz/src/games/curses.c
+@@ -45,7 +45,7 @@ zword* curses_ram_addrs(int *n) {
+ 
+ char** curses_intro_actions(int *n) {
+   *n = 1;
+-  return curses_intro;
++  return (char **)curses_intro;
+ }
+ 
+ char* curses_clean_observation(char* obs) {
+diff --git a/frotz/src/games/hollywood.c b/frotz/src/games/hollywood.c
+index 38cc7d7..58d8be4 100644
+--- a/frotz/src/games/hollywood.c
++++ b/frotz/src/games/hollywood.c
+@@ -43,7 +43,7 @@ zword* hollywood_ram_addrs(int *n) {
+ 
+ char** hollywood_intro_actions(int *n) {
+   *n = 3;
+-  return hollywood_intro;
++  return (char **)hollywood_intro;
+ }
+ 
+ char* hollywood_clean_observation(char* obs) {
+diff --git a/frotz/src/games/huntdark.c b/frotz/src/games/huntdark.c
+index c4ecf10..10c2f44 100644
+--- a/frotz/src/games/huntdark.c
++++ b/frotz/src/games/huntdark.c
+@@ -40,7 +40,7 @@ zword* huntdark_ram_addrs(int *n) {
+ 
+ char** huntdark_intro_actions(int *n) {
+   *n = 2;
+-  return huntdark_intro;
++  return (char **)huntdark_intro;
+ }
+ 
+ char* huntdark_clean_observation(char* obs) {
+diff --git a/frotz/src/games/jewel.c b/frotz/src/games/jewel.c
+index 4294e8e..3a0e941 100644
+--- a/frotz/src/games/jewel.c
++++ b/frotz/src/games/jewel.c
+@@ -33,7 +33,7 @@ zword* jewel_ram_addrs(int *n) {
+ 
+ char** jewel_intro_actions(int *n) {
+   *n = 2;
+-  return jewel_intro;
++  return (char **)jewel_intro;
+ }
+ 
+ char* jewel_clean_observation(char* obs) {
+diff --git a/frotz/src/games/library.c b/frotz/src/games/library.c
+index 26fb849..c861e70 100644
+--- a/frotz/src/games/library.c
++++ b/frotz/src/games/library.c
+@@ -33,7 +33,7 @@ zword* library_ram_addrs(int *n) {
+ 
+ char** library_intro_actions(int *n) {
+   *n = 1;
+-  return library_intro;
++  return (char **)library_intro;
+ }
+ 
+ char* library_clean_observation(char* obs) {
+diff --git a/frotz/src/games/loose.c b/frotz/src/games/loose.c
+index d47bb5b..384b560 100644
+--- a/frotz/src/games/loose.c
++++ b/frotz/src/games/loose.c
+@@ -33,7 +33,7 @@ zword* loose_ram_addrs(int *n) {
+ 
+ char** loose_intro_actions(int *n) {
+   *n = 1;
+-  return loose_intro;
++  return (char **)loose_intro;
+ }
+ 
+ char* loose_clean_observation(char* obs) {
+@@ -100,7 +100,7 @@ int loose_ignore_attr_clr(zword obj_num, zword attr_idx) {
+ void loose_clean_world_objs(zobject* objs) {
+     int i;
+     char mask;
+-    mask = ~(1 << 7) & ~(1 << 6);
++    mask = (char)(~(1 << 7) & ~(1 << 6));
+     // Clear attr 24 & 25
+     for (i=1; i<=loose_get_num_world_objs(); ++i) {
+         objs[i].attr[3] &= mask;
+diff --git a/frotz/src/games/lurking.c b/frotz/src/games/lurking.c
+index cae0955..5b4820f 100644
+--- a/frotz/src/games/lurking.c
++++ b/frotz/src/games/lurking.c
+@@ -46,7 +46,7 @@ zword* lurking_ram_addrs(int *n) {
+ 
+ char** lurking_intro_actions(int *n) {
+   *n = 4;
+-  return lurking_intro;
++  return (char **)lurking_intro;
+ }
+ 
+ char* lurking_clean_observation(char* obs) {
+diff --git a/frotz/src/games/partyfoul.c b/frotz/src/games/partyfoul.c
+index 146a46b..467990e 100644
+--- a/frotz/src/games/partyfoul.c
++++ b/frotz/src/games/partyfoul.c
+@@ -34,7 +34,7 @@ zword* partyfoul_ram_addrs(int *n) {
+ 
+ char** partyfoul_intro_actions(int *n) {
+   *n = 2;
+-  return partyfoul_intro;
++  return (char **)partyfoul_intro;
+ }
+ 
+ char* partyfoul_clean_observation(char* obs) {
+diff --git a/frotz/src/games/seastalker.c b/frotz/src/games/seastalker.c
+index 4960506..104e816 100644
+--- a/frotz/src/games/seastalker.c
++++ b/frotz/src/games/seastalker.c
+@@ -32,12 +32,12 @@ const zword seastalker_special_ram_addrs[1] = {
+ 
+ zword* seastalker_ram_addrs(int *n) {
+     *n = 1;
+-    return seastalker_ram_addrs;
++    return (zword *)seastalker_ram_addrs;
+ }
+ 
+ char** seastalker_intro_actions(int *n) {
+   *n = 3;
+-  return seastalker_intro;
++  return (char **)seastalker_intro;
+ }
+ 
+ char* seastalker_clean_observation(char* obs) {
+diff --git a/frotz/src/games/sherbet.c b/frotz/src/games/sherbet.c
+index 92a4649..ea6caa4 100644
+--- a/frotz/src/games/sherbet.c
++++ b/frotz/src/games/sherbet.c
+@@ -33,7 +33,7 @@ zword* sherbet_ram_addrs(int *n) {
+ 
+ char** sherbet_intro_actions(int *n) {
+   *n = 1;
+-  return sherbet_intro;
++  return (char **)sherbet_intro;
+ }
+ 
+ char* sherbet_clean_observation(char* obs) {
+diff --git a/frotz/src/games/sherlock.c b/frotz/src/games/sherlock.c
+index f3fd3e5..03c0a90 100644
+--- a/frotz/src/games/sherlock.c
++++ b/frotz/src/games/sherlock.c
+@@ -33,7 +33,7 @@ zword* sherlock_ram_addrs(int *n) {
+ 
+ char** sherlock_intro_actions(int *n) {
+   *n = 1;
+-  return sherlock_intro;
++  return (char **)sherlock_intro;
+ }
+ 
+ char* sherlock_clean_observation(char* obs) {
+diff --git a/frotz/src/games/snacktime.c b/frotz/src/games/snacktime.c
+index 47aa43f..a209720 100644
+--- a/frotz/src/games/snacktime.c
++++ b/frotz/src/games/snacktime.c
+@@ -38,7 +38,7 @@ zword* snacktime_ram_addrs(int *n) {
+ 
+ char** snacktime_intro_actions(int *n) {
+   *n = 1;
+-  return snacktime_intro;
++  return (char **)snacktime_intro;
+ }
+ 
+ char* snacktime_clean_observation(char* obs) {
+diff --git a/frotz/src/games/theatre.c b/frotz/src/games/theatre.c
+index 0045a5e..a0645fd 100644
+--- a/frotz/src/games/theatre.c
++++ b/frotz/src/games/theatre.c
+@@ -38,7 +38,7 @@ zword* theatre_ram_addrs(int *n) {
+ 
+ char** theatre_intro_actions(int *n) {
+   *n = 1;
+-  return theatre_intro;
++  return (char **)theatre_intro;
+ }
+ 
+ char* theatre_clean_observation(char* obs) {
+diff --git a/frotz/src/games/trinity.c b/frotz/src/games/trinity.c
+index 57224c7..afc229c 100644
+--- a/frotz/src/games/trinity.c
++++ b/frotz/src/games/trinity.c
+@@ -33,7 +33,7 @@ zword* trinity_ram_addrs(int *n) {
+ 
+ char** trinity_intro_actions(int *n) {
+   *n = 1;
+-  return trinity_intro;
++  return (char **)trinity_intro;
+ }
+ 
+ char* trinity_clean_observation(char* obs) {
+diff --git a/frotz/src/games/tryst.c b/frotz/src/games/tryst.c
+index cc45c43..0542ca6 100644
+--- a/frotz/src/games/tryst.c
++++ b/frotz/src/games/tryst.c
+@@ -54,7 +54,7 @@ zword* tryst_ram_addrs(int *n) {
+ 
+ char** tryst_intro_actions(int *n) {
+   *n = 1;
+-  return tryst_intro;
++  return (char **)tryst_intro;
+ }
+ 
+ char* tryst_clean_observation(char* obs) {
+diff --git a/frotz/src/interface/frotz_interface.c b/frotz/src/interface/frotz_interface.c
+index bebc3f4..001917e 100644
+--- a/frotz/src/interface/frotz_interface.c
++++ b/frotz/src/interface/frotz_interface.c
+@@ -1649,7 +1649,7 @@ void get_object(zobject *obj, zword obj_num) {
+   }
+ 
+   (*obj).num = obj_num;
+-  get_text(0, obj_name_addr+1, &(*obj).name);
++  get_text(0, obj_name_addr+1, (char *)&(*obj).name);
+ 
+   (*obj).parent = get_parent(obj_num);
+   (*obj).sibling = get_sibling(obj_num);
+diff --git a/frotz/src/ztools/showdict.c b/frotz/src/ztools/showdict.c
+index 630779a..a020ffe 100644
+--- a/frotz/src/ztools/showdict.c
++++ b/frotz/src/ztools/showdict.c
+@@ -86,7 +86,7 @@ int dict_size;
+ 
+         /* Display the text for the word */
+ 
+-        decode_text_to_buffer(&word_address, &(dict_word->word));
++        decode_text_to_buffer(&word_address, (char *)&(dict_word->word));
+ 
+         /* Get the data for each entry */
+ 
