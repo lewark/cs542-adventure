@@ -1,0 +1,27 @@
+script_dir=$(dirname "$0")
+
+# This initializing if statement doesn't work if pyenv run with source `source pyenv`
+# Because script_dir isn't correct, since it's like it's run from the source command of the terminal session
+if [ ! -d "$script_dir/env" ];
+then
+    python3 -m venv "$script_dir/env"
+fi
+
+source $script_dir/env/bin/activate
+
+$script_dir/setup-env.sh
+
+command=$1
+
+case $command in
+    install)
+        pip install -r $script_dir/requirements.txt
+    ;;
+    run)
+        python -m "${@:2}"
+    ;;
+    "") 
+        # If no command, does nothing. Good for if you want to source the env with
+        # source pyenv
+    ;;
+esac
