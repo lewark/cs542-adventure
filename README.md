@@ -22,3 +22,8 @@
     4. Build out our action prompt by taking room prompt, any relevant info from DB, and whatever final prompt we want to give the LLM
     5. Semantically split room prompt and put into database
     6. Send prompt to LLM and take action
+    - Vector databases
+        - Redis
+        - Postgres with pgvector
+        - sqlite with sqlite-vec <- Tyson's favorite idea
+        - Lots of specialized options, like FAISS, QDrant, Chroma
