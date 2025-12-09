@@ -1,0 +1,198 @@
+Playing game. 'q' to quit
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+[r0] LLM description: type 's'
+[r0] LLM action: open box
+Received command: open box
+Opening the small mailbox reveals a leaflet.
+
+
+[r1] LLM description: go north
+[r1] LLM action: take key
+Received command: take key
+You can't see any key here!
+
+
+[r2] LLM description: take mailbox
+[r2] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r3] LLM description: examine mailbox
+[r3] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r4] LLM description: put down box
+[r4] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r5] LLM description: use mailbox
+[r5] LLM action: close mailbox
+Received command: close mailbox
+Closed.
+
+
+[r6] LLM description: read inventory
+[r6] LLM action: open mailbox
+Received command: open mailbox
+Opened.
+
+
+[r7] LLM description: look left
+[r7] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r8] LLM description: take leaflet
+[r8] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r9] LLM description: examine inventory
+[r9] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r10] LLM description: ask about contents of the letter
+[r10] LLM action: take note
+Received command: take note
+I don't know the word "note".
+
+
+[r11] LLM description: type note
+[r11] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r12] LLM description: open book
+[r12] LLM action: take book
+Received command: take book
+You can't see any book here!
+
+
+[r13] LLM description: put down leaflet
+[r13] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r14] LLM description: use north
+[r14] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r15] LLM description: take east
+[r15] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r16] LLM description: move west
+[r16] LLM action: take mail
+Received command: take mail
+Taken.
+
+
+[r17] LLM description: look
+[r17] LLM action: take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+[r18] LLM description: put down book
+[r18] LLM action: put down book
+Received command: put down book
+You can't see any book here!
+
+
+[r19] LLM description: type mail
+[r19] LLM action: type south
+Received command: south
+South of House
+You are facing the south side of a white house. There is no door here, and all the windows are boarded.
+
+
+[r20] LLM description: take east
+[r20] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r21] LLM description: type north
+[r21] LLM action: type take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+[r22] LLM description: put away book
+[r22] LLM action: take book
+Received command: take book
+You can't see any book here!
+
+
+[r23] LLM description: put down door
+[r23] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r24] LLM description: run
+[r24] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r25] LLM description: ask where the south door is
+[r25] LLM action: ask east
+Received command: ask east
+You used the word "east" in a way that I don't understand.
+
+
+[r26] LLM description: ask where
+[r26] LLM action: ask where north
+Received command: ask where north
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r27] LLM description: go south
+[r27] LLM action: open door
+Received command: open door
+You can't see any door here!
+
+
+[r28] LLM description: show book
+[r28] LLM action: show book
+Received command: show book
+I don't know the word "show".
+
+
+[r29] LLM description: ask north
+[r29] LLM action: ask north
+Received command: ask north
+You used the word "north" in a way that I don't understand.
+
+
+[r30] LLM description: type 'examine'
+[r30] LLM action: take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+Scored 0 out of 350
