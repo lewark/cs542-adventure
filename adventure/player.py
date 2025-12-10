@@ -1,3 +1,5 @@
+import time
+
 import jericho
 
 def run_game(model, tokenizer, game_filename: str, n_steps: int, with_history: bool):
@@ -8,22 +10,66 @@ def run_game(model, tokenizer, game_filename: str, n_steps: int, with_history: b
     obs, info = env.reset()
     print(obs)
     
+    unique_hashes = set()
+    unique_rooms = set()
+    unique_items = set()
+    
+    unique_rooms.add(env.get_player_location().name)
+    unique_hashes.add(env.get_world_state_hash())
+    for item in env.get_inventory():
+        unique_items.add(item.name)
+
+    prev_score = -1
+    total_steps = 0
+    retries = 0
+    retries_per_score = []
+    generate_times = []
+
     for i in range(n_steps):
         if not with_history:
             messages.clear()
 
         messages.append(make_message("user", obs))
         
+        start = time.time()
         response = generate_response(model, tokenizer, messages)
+        generate_times.append(time.time() - start)
+
         print(">", response)
         messages.append(make_message("assistant", response))
         
         obs, reward, done, info = env.step(response)
         print(obs)
+
+        unique_rooms.add(env.get_player_location().name)
+        unique_hashes.add(env.get_world_state_hash())
+        for item in env.get_inventory():
+            unique_items.add(item.name)
+
+        retries += 1
+        if info["score"] != prev_score:
+            retries_per_score.append(retries)
+            retries = 0
+        prev_score = info["score"]
+        total_steps += 1
+
         if done:
             break
     
+    stats = {
+        'unique_rooms': len(unique_rooms),
+        'unique_hashes': len(unique_hashes),
+        'unique_items': len(unique_items),
+        'score': info['score'],
+        'max_score': env.get_max_score(),
+        'avg_retries': sum(retries_per_score) / max(len(retries_per_score), 1),
+        'avg_generate_time': sum(generate_times) / len(generate_times),
+    }
+    print(stats)
+    
     env.close()
+    return stats
+
 
 def make_message(role, content):
     return {"role": role, "content": content}
