@@ -1,6 +1,7 @@
 import jericho
+from datasets import Dataset
 
-from .model import load_model
+from .model import load_model, save_model
 
 
 def make_grpo_dataset(env: jericho.FrotzEnv):
@@ -46,7 +47,7 @@ def get_reward_func(game_file: str):
         #env.set_state(states[state_hash])
         #env.step
         if reward_env is None:
-            reward_env = jericho.FrotzEnv(main_game_file)
+            reward_env = jericho.FrotzEnv(game_file)
         #local_env = env.copy()
         scores = []
         for prompt, completion, state_hash in zip(prompts, completions, state_hashes):
@@ -130,8 +131,14 @@ def make_grpo_trainer(model, tokenizer, grpo_dataset, reward_func):
 
 
 if __name__ == "__main__":
-    model, tokenizer = load_model("lora_model")
+    model, tokenizer = load_model("lora_model", "llama-3.2")
+    env_file = "./z-machine-games-master/jericho-game-suite/zork1.z5"
+    
+    env = jericho.FrotzEnv(env_file)
     grpo_dataset, states = make_grpo_dataset(env)
-    reward_func = get_reward_func("./z-machine-games-master/jericho-game-suite/zork1.z5")
+    env.close()
+
+    reward_func = get_reward_func(env_file)
     grpo_trainer = make_grpo_trainer(model, tokenizer, grpo_dataset, reward_func)
     grpo_trainer.train()
+    save_model(model, tokenizer, "grpo_model")
