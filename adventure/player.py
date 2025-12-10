@@ -1,6 +1,6 @@
 import jericho
 
-def run_game(game_filename: str, n_steps: int, with_history: bool):
+def run_game(model, tokenizer, game_filename: str, n_steps: int, with_history: bool):
     env = jericho.FrotzEnv(game_filename)
 
     messages = []
@@ -14,7 +14,7 @@ def run_game(game_filename: str, n_steps: int, with_history: bool):
 
         messages.append(make_message("user", obs))
         
-        response = generate_response(messages)
+        response = generate_response(model, tokenizer, messages)
         print(">", response)
         messages.append(make_message("assistant", response))
         
@@ -38,7 +38,7 @@ def get_input_ids(tokenizer, messages):
 
 
 def generate_response(model, tokenizer, messages):
-    input_ids = get_input_ids(messages)
+    input_ids = get_input_ids(tokenizer, messages)
 
     output_ids = model.generate(input_ids,
         max_new_tokens = 128,
@@ -55,3 +55,12 @@ def generate_response(model, tokenizer, messages):
     end_index = out_line.rindex(end_token)
     
     return out_line[start_index : end_index].strip()
+
+
+if __name__ == "__main__":
+    from .model import load_model
+    from unsloth import FastLanguageModel
+    model, tokenizer = load_model("lora_model", "llama-3.2")
+    FastLanguageModel.for_inference(model)
+    
+    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, True)

@@ -51,11 +51,12 @@ def make_trainer(model, tokenizer, dataset):
 
 
 if __name__ == "__main__":
-    game_files = [
-        name
-        for name in glob.glob("./z-machine-games-master/jericho-game-suite/*.z5")
-        if "zork1" not in name
-    ]
+    #game_files = [
+    #    name
+    #    for name in glob.glob("./z-machine-games-master/jericho-game-suite/*.z5")
+    #    if "zork1" not in name
+    #]
+    game_files = ["./z-machine-games-master/jericho-game-suite/zork1.z5"]
     dataset = get_dataset(game_files)
 
     model, tokenizer = load_model("unsloth/Llama-3.2-3B-Instruct-bnb-4bit", "llama-3.2")
@@ -65,3 +66,11 @@ if __name__ == "__main__":
     trainer_stats = trainer.train()
 
     save_model(model, tokenizer, "lora_model")
+
+    from unsloth import FastLanguageModel
+    model, tokenizer = load_model("lora_model", "llama-3.2")
+    FastLanguageModel.for_inference(model)
+
+    from .player import run_game
+    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, True)
+
