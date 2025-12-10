@@ -1,0 +1,166 @@
+Playing game. 'q' to quit
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+[r0] LLM Response: open mailbox
+Received command: open mailbox
+Opening the small mailbox reveals a leaflet.
+
+
+[r1] LLM Response: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r2] LLM Response: close mailbox
+Received command: close mailbox
+Closed.
+
+
+[r3] LLM Response: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r4] LLM Response: type north
+Received command: type north
+I don't know the word "type".
+
+
+[r5] LLM Response: close mailbox
+Received command: close mailbox
+It is already closed.
+
+
+[r6] LLM Response: type east
+Received command: type east
+I don't know the word "type".
+
+
+[r7] LLM Response: close door
+Received command: close door
+It is already closed.
+
+
+[r8] LLM Response: close door
+Received command: close door
+It is already closed.
+
+
+[r9] LLM Response: close door
+Received command: close door
+It is already closed.
+
+
+[r10] LLM Response: type north
+Received command: type north
+I don't know the word "type".
+
+
+[r11] LLM Response: open book
+Received command: open book
+You can't see any book here!
+
+
+[r12] LLM Response: open mailbox
+Received command: open mailbox
+Opened.
+
+
+[r13] LLM Response: type north
+Received command: type north
+I don't know the word "type".
+
+
+[r14] LLM Response: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r15] LLM Response: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r16] LLM Response: put down book
+Received command: put down book
+You can't see any book here!
+
+
+[r17] LLM Response: close mailbox
+Received command: close mailbox
+Closed.
+
+
+[r18] LLM Response: open book
+Received command: open book
+You can't see any book here!
+
+
+[r19] LLM Response: open mail
+Received command: open mail
+You must tell me how to do that to a leaflet.
+
+
+[r20] LLM Response: close mail
+Received command: close mail
+You must tell me how to do that to a leaflet.
+
+
+[r21] LLM Response: take left passage
+Received command: take left passage
+I don't know the word "left".
+
+
+[r22] LLM Response: close mail
+Received command: close mail
+You must tell me how to do that to a leaflet.
+
+
+[r23] LLM Response: open book
+Received command: open book
+You can't see any book here!
+
+
+[r24] LLM Response: take mailbox
+Received command: take mailbox
+It is securely anchored.
+
+
+[r25] LLM Response: use mail
+Received command: use mail
+I don't know the word "use".
+
+
+[r26] LLM Response: open book
+Received command: open book
+You can't see any book here!
+
+
+[r27] LLM Response: open book
+Received command: open book
+You can't see any book here!
+
+
+[r28] LLM Response: close mail
+Received command: close mail
+You must tell me how to do that to a leaflet.
+
+
+[r29] LLM Response: close book
+Received command: close book
+You can't see any book here!
+
+
+[r30] LLM Response: open mailbox
+Received command: open mailbox
+Opened.
+
+
+Scored 0 out of 350

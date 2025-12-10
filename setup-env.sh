@@ -8,3 +8,5 @@ then
     unzip master.zip
     rm master.zip
 fi
+
+export LD_LIBRARY_PATH='./env/lib/python3.13/site-packages/jericho'
