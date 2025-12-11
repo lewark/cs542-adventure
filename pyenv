@@ -4,7 +4,7 @@ script_dir=$(dirname "$0")
 # Because script_dir isn't correct, since it's like it's run from the source command of the terminal session
 if [ ! -d "$script_dir/env" ];
 then
-    python3 -m venv "$script_dir/env"
+    python3.13 -m venv "$script_dir/env"
 fi
 
 source $script_dir/env/bin/activate
