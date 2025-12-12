@@ -56,11 +56,11 @@ def steps_to_dataset(steps: list[list[tuple[str, str]]], length: int, overlap: b
     return Dataset.from_dict({"conversations": convos})
 
 
-def get_dataset(game_files: list[str]):
+def get_dataset(game_files: list[str], length: int, overlap: bool):
     steps = []
     for game_file in game_files:
         steps.append(get_steps(game_file))
-    dataset = steps_to_dataset(steps, 5)
+    dataset = steps_to_dataset(steps, length=length, overlap=overlap)
 
     return dataset
 

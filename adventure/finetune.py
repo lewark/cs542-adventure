@@ -26,7 +26,7 @@ def make_trainer(model, tokenizer, dataset):
             per_device_train_batch_size = 2,
             gradient_accumulation_steps = 4,
             warmup_steps = 5,
-            max_steps = 240, #60,
+            max_steps = 500, #60,
             # num_train_epochs = 1,
             learning_rate = 2e-4,
             fp16 = not enable_bf16,
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     #    if "zork1" not in name
     #]
     game_files = ["./z-machine-games-master/jericho-game-suite/zork1.z5"]
-    dataset = get_dataset(game_files)
+    dataset = get_dataset(game_files, length=6, overlap=True)
 
     model, tokenizer = load_model("unsloth/Llama-3.2-3B-Instruct-bnb-4bit", "llama-3.2")
     dataset = format_dataset(tokenizer, dataset)
@@ -65,12 +65,12 @@ if __name__ == "__main__":
     trainer = make_trainer(model, tokenizer, dataset)
     trainer_stats = trainer.train()
 
-    save_model(model, tokenizer, "lora_model")
+    save_model(model, tokenizer, "lora_model_2")
 
     from unsloth import FastLanguageModel
-    model, tokenizer = load_model("lora_model", "llama-3.2")
+    #model, tokenizer = load_model("lora_model", "llama-3.2")
     FastLanguageModel.for_inference(model)
 
     from .player import run_game
-    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, True)
+    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, 10)
 

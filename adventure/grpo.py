@@ -4,18 +4,24 @@ from datasets import Dataset
 from .model import load_model, save_model
 
 
-def make_grpo_dataset(env: jericho.FrotzEnv):
+def make_grpo_dataset(env: jericho.FrotzEnv, history: int = 10):
     states = {}
     
     initial_obs, info = env.reset()
     walkthrough = env.get_walkthrough()
 
+    messages = []
     prompts = []
     hashes = []
     
     obs = initial_obs
     for step in walkthrough:
-        prompts.append([{"role": "user", "content": obs}])
+        if len(messages) > history:
+            messages.pop(0)
+            messages.pop(0)
+
+        messages.append({"role": "user", "content": obs})
+        prompts.append(list(messages))
         
         state_hash = env.get_world_state_hash()
         hashes.append(state_hash)
@@ -23,6 +29,8 @@ def make_grpo_dataset(env: jericho.FrotzEnv):
             states[state_hash] = env.get_state()
         
         obs, reward, done, info = env.step(step)
+
+        messages.append({"role": "assistant", "content": step})
 
         if done:
             break
@@ -141,4 +149,4 @@ if __name__ == "__main__":
     reward_func = get_reward_func(env_file)
     grpo_trainer = make_grpo_trainer(model, tokenizer, grpo_dataset, reward_func)
     grpo_trainer.train()
-    save_model(model, tokenizer, "grpo_model")
+    save_model(model, tokenizer, "grpo_model_2")
