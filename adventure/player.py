@@ -2,7 +2,9 @@ import time
 
 import jericho
 
-def run_game(model, tokenizer, game_filename: str, n_steps: int, with_history: bool):
+from .prompt import get_prompt
+
+def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int):
     env = jericho.FrotzEnv(game_filename)
 
     messages = []
@@ -26,10 +28,12 @@ def run_game(model, tokenizer, game_filename: str, n_steps: int, with_history: b
     generate_times = []
 
     for i in range(n_steps):
-        if not with_history:
-            messages.clear()
+        if len(messages) > history:
+            messages.pop(0)
+            messages.pop(0)
 
-        messages.append(make_message("user", obs))
+        prompt = get_prompt(env, obs, done)
+        messages.append(make_message("user", prompt))
         
         start = time.time()
         response = generate_response(model, tokenizer, messages)
@@ -106,7 +110,7 @@ def generate_response(model, tokenizer, messages):
 if __name__ == "__main__":
     from .model import load_model
     from unsloth import FastLanguageModel
-    model, tokenizer = load_model("lora_model", "llama-3.2")
+    model, tokenizer = load_model("grpo_model_2", "llama-3.2")
     FastLanguageModel.for_inference(model)
     
-    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, True)
+    run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, history=10)

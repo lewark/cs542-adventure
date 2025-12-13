@@ -1,4 +1,5 @@
 import jericho
+from .prompt import get_prompt
 
 
 def get_steps(filename: str):
@@ -8,10 +9,12 @@ def get_steps(filename: str):
     walkthrough = env.get_walkthrough()
 
     steps = []
-    
+   
+    done = False
     obs = initial_obs
     for step in walkthrough:
-        steps.append((obs, step))
+        prompt = get_prompt(env, obs, done)
+        steps.append((prompt, step))
         #print(obs, step)
         obs, reward, done, info = env.step(step)
         #print(reward)
