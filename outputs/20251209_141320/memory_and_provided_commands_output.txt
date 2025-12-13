@@ -1,0 +1,181 @@
+Playing game. 'q' to quit
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+[r0] LLM Response: open mailbox
+Received command: open mailbox
+Opening the small mailbox reveals a leaflet.
+
+
+[r1] LLM Response: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r2] LLM Response: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r3] LLM Response: close mailbox
+Received command: close mailbox
+Closed.
+
+
+[r4] LLM Response: ask about the house
+Received command: ask about the house
+I don't know the word "about".
+
+
+[r5] LLM Response: south
+Received command: south
+South of House
+You are facing the south side of a white house. There is no door here, and all the windows are boarded.
+
+
+[r6] LLM Response: ask for name of current room
+Received command: ask for name of current room
+In room north of you.
+Received command: In room north of you.
+I don't know the word "room".
+
+
+[r7] LLM Response: examine door
+Received command: examine door
+You can't see any door here!
+
+
+[r8] LLM Response: examine mailbox
+Received command: examine mailbox
+You can't see any mailbox here!
+
+
+[r9] LLM Response: examine door
+Received command: examine door
+You can't see any door here!
+
+
+[r10] LLM Response: ask for name of current room
+Received command: ask for name of current room
+I don't know the word "name".
+
+
+[r11] LLM Response: ask for name of current room
+Received command: ask for name of current room
+I don't know the word "name".
+
+
+[r12] LLM Response: ask for location of treasure
+Received command: ask for location of treasure
+I don't know the word "location".
+
+
+[r13] LLM Response: south
+Received command: south
+Forest
+This is a dimly lit forest, with large trees all around.
+
+
+[r14] LLM Response: go around trees
+Received command: go around trees
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+[r15] LLM Response: ask for name of current room
+Received command: ask for name of current room
+I don't know the word "name".
+
+
+[r16] LLM Response: ask for location of treasure
+Received command: ask for location of treasure
+I don't know the word "location".
+
+
+[r17] LLM Response: ask for name of current room
+Received command: ask for name of current room
+I don't know the word "name".
+
+
+[r18] LLM Response: ask what you see
+Received command: ask what you see
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r19] LLM Response: look
+Received command: look
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+[r20] LLM Response: look
+Received command: look
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+[r21] LLM Response: look
+Received command: look
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+[r22] LLM Response: ask what room i am in
+Received command: ask what room i am in
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r23] LLM Response: go around forest
+Received command: go around forest
+Clearing
+You are in a small clearing in a well marked forest path that extends to the east and west.
+
+
+[r24] LLM Response: ask where there is food
+Received command: ask where there is food
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r25] LLM Response: go around forest
+Received command: go around forest
+Forest
+This is a forest, with trees in all directions. To the east, there appears to be sunlight.
+
+
+[r26] LLM Response: look at trees
+Received command: look at trees
+There's nothing special about the forest.
+
+
+[r27] LLM Response: go around east
+Received command: go around east
+You used the word "east" in a way that I don't understand.
+
+
+[r28] LLM Response: south
+Received command: south
+Forest
+You hear in the distance the chirping of a song bird.
+
+
+[r29] LLM Response: go around forest
+Received command: go around forest
+Forest Path
+You hear in the distance the chirping of a song bird.
+
+
+[r30] LLM Response: up
+Received command: up
+Up a Tree
+You are about 10 feet above the ground nestled among some large branches. The nearest branch above you is above your reach.
+Beside you on the branch is a small bird's nest.
+In the bird's nest is a large egg encrusted with precious jewels, apparently scavenged by a childless songbird. The egg is covered with fine gold inlay, and ornamented in lapis lazuli and mother-of-pearl. Unlike most eggs, this one is hinged and closed with a delicate looking clasp. The egg appears extremely fragile.
+
+
+Scored 0 out of 350

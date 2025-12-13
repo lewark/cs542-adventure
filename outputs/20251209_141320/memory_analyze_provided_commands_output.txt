@@ -1,0 +1,204 @@
+Playing game. 'q' to quit
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+[r0] LLM description: go north
+[r0] LLM action: open mailbox
+Received command: open mailbox
+Opening the small mailbox reveals a leaflet.
+
+
+[r1] LLM description: go north
+[r1] LLM action: take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+[r2] LLM description: take east
+[r2] LLM action: close mailbox
+Received command: close mailbox
+Closed.
+
+
+[r3] LLM description: ask about mailbox contents
+[r3] LLM action: look
+Received command: look
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+[r4] LLM description: look north
+[r4] LLM action: open mailbox
+Received command: open mailbox
+Opening the small mailbox reveals a leaflet.
+
+
+[r5] LLM description: can you take north?
+[r5] LLM action: take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+[r6] LLM description: close mailbox
+[r6] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r7] LLM description: close mailbox
+[r7] LLM action: take mail
+Received command: take mail
+Taken.
+
+
+[r8] LLM description: ask where's house
+[r8] LLM action: north
+Received command: north
+North of House
+You are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.
+
+
+[r9] LLM description: take east
+[r9] LLM action: put down leaflet
+Received command: put down leaflet
+Dropped.
+
+
+[r10] LLM description: ask where it's at
+[r10] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r11] LLM description: type take east
+[r11] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r12] LLM description: try again
+[r12] LLM action: talk
+Received command: talk
+What do you want to talk to?
+
+
+[r13] LLM description: ask what room
+[r13] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r14] LLM description: use commands wisely
+[r14] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r15] LLM description: put down leaflet
+[r15] LLM action: put down leaflet
+Received command: put down leaflet
+You're not carrying the leaflet.
+
+
+[r16] LLM description: type help
+[r16] LLM action: type north
+Received command: north
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+[r17] LLM description: open door
+[r17] LLM action: go around forest
+Received command: go around forest
+Clearing
+You are in a small clearing in a well marked forest path that extends to the east and west.
+
+
+[r18] LLM description: ask what room
+[r18] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r19] LLM description: ask where?
+[r19] LLM action: ask where?
+Received command: ask where?
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r20] LLM description: use inventory
+[r20] LLM action: go west
+Received command: go west
+Behind House
+You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.
+
+
+[r21] LLM description: ask what room
+[r21] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r22] LLM description: ask where?
+[r22] LLM action: open window
+Received command: open window
+With great effort, you open the window far enough to allow entry.
+
+
+[r23] LLM description: ask where?
+[r23] LLM action: go north
+Received command: go north
+North of House
+A small leaflet is on the ground.
+
+
+[r24] LLM description: ask what room
+[r24] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r25] LLM description: ask where?
+[r25] LLM action: take north
+Received command: take north
+You used the word "north" in a way that I don't understand.
+
+
+[r26] LLM description: type take east
+[r26] LLM action: take east
+Received command: take east
+You used the word "east" in a way that I don't understand.
+
+
+[r27] LLM description: ask what room
+[r27] LLM action: ask what room
+Received command: ask what room
+Please consult your manual for the correct way to talk to other people or creatures.
+
+
+[r28] LLM description: ask where there is food
+[r28] LLM action: take leaflet
+Received command: take leaflet
+Taken.
+
+
+[r29] LLM description: go north
+[r29] LLM action: run north
+Received command: run north
+Forest Path
+
+
+[r30] LLM description: ask what room
+[r30] LLM action: ask north
+Received command: ask north
+You used the word "north" in a way that I don't understand.
+
+
+Scored 0 out of 350
