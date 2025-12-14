@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 directions = ["north", "south", "east", "west", "up", "down"]
 opposite_directions = {"north":"south", "south":"north", "east":"west", "west":"east", "up":"down", "down": "up"}
 short_directions = {direction[0]: direction for direction in directions}
+dir_ids = {dirname: index for index, dirname in enumerate(directions)}
 
 
 class Room(BaseModel):

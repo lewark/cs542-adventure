@@ -1,7 +1,9 @@
+from typing import Optional
+
 import ollama
 import jericho
 
-from .schema import Room, GameObject, RoomNode, room_schema, directions, short_directions, opposite_directions
+from .schema import Room, GameObject, RoomNode, room_schema, directions, short_directions, opposite_directions, dir_ids
 
 MODEL = "llama3.2:3b"
 GAME = "z-machine-games-master/jericho-game-suite/zork1.z5"
@@ -48,7 +50,6 @@ def main():
         loc = env.get_player_location()
         assert loc is not None
 
-
         if loc.num not in rooms:
             room_model = extract_room_model(obs)
             room = RoomNode(room_model, loc.num)
@@ -59,9 +60,37 @@ def main():
             print(room_model)
             room.model = room_model
 
-        command_split = command.split()
+        update_exits(command, last_loc, loc, rooms)
+        last_loc = loc
 
-        if last_loc is not None and last_loc.num != loc.num:
+        #prompt = get_prompt(env, obs, False, rooms, commands[-10:])
+        #print(prompt)
+        print(obs)
+
+        #command = get_next_command(prompt)
+        #print(">", command)
+        command = input("> ")
+        commands.append(command)
+
+        command_split = command.split()
+        if len(command_split) > 0 and command_split[0] == "warp":
+            warp_command(rooms, env, loc, command_split)
+        else:
+            obs, reward, done, info = env.step(command)
+
+        #break
+
+    env.close()
+
+
+def update_exits(command: str, last_loc, loc, rooms: RoomDict):
+    room = rooms[loc.num]
+    command_split = command.split()
+
+    if len(command_split) > 0:
+        if command_split[0] == "warp":
+            pass
+        elif last_loc is not None and last_loc.num != loc.num:
             direction = command_split[-1].lower()
             if direction in short_directions:
                 direction = short_directions[direction]
@@ -72,28 +101,29 @@ def main():
                 last_room.exits[direction] = new_room
                 opposite_dir = opposite_directions[direction]
                 new_room.exits[opposite_dir] = last_room
-        elif len(command_split) > 0:
+        else:
             direction = command_split[-1].lower()
             if direction in short_directions:
                 direction = short_directions[direction]
             if direction in directions:
                 room.exits[direction] = None
 
-        last_loc = loc
 
-        prompt = get_prompt(env, obs, False, rooms, commands[-10:])
-        command = get_next_command(prompt)
-        commands.append(command)
-
-        print(prompt)
-
-        print(">", command)
-
-        obs, reward, done, info = env.step(command)
-
-        #break
-
-    env.close()
+def warp_command(rooms: RoomDict, env: jericho.FrotzEnv, loc, command_split: list[str]):
+    room_name = " ".join(command_split[1:])
+    end_room = find_room_by_name(rooms, room_name)
+    if end_room is None:
+        obs = "Unable to find room " + room_name
+    else:
+        room = rooms[loc.num]
+        path = find_path(room, end_room, rooms)
+        if len(path) > 0:
+            for step in path:
+                print(">", step)
+                obs, reward, done, info = env.step(step)
+                print(obs)
+        else:
+            obs = "Unable to find path to " + room_name
 
 
 def extract_room_model(obs: str) -> Room:
@@ -114,6 +144,53 @@ def update_room_model(room_model: Room, command: str, obs: str):
 def get_next_command(prompt):
     result = ollama.generate(model=MODEL, prompt=prompt)
     return result.response
+
+
+def find_room_by_name(rooms: RoomDict, name: str) -> Optional[RoomNode]:
+    name = name.lower()
+    for room in rooms.values():
+        if room.model.name.lower() == name:
+            return room
+    return None
+
+
+def find_path(start_room: RoomNode, end_room: RoomNode, rooms: RoomDict) -> list[str]:
+    visited: dict[int, int] = {} # room, in_direction
+    next_rooms: list[int] = []
+
+    cur_room = start_room
+    while True:
+        for direction, room in cur_room.exits.items():
+            if room is None:
+                continue
+
+            if room.num not in visited:
+                dir_id = dir_ids[direction]
+                visited[room.num] = dir_id
+                next_rooms.append(room.num)
+
+            if room is end_room:
+                return backtrace(start_room, end_room, visited, rooms)
+
+        if len(next_rooms) == 0:
+            return []
+        cur_room = rooms[next_rooms.pop(0)]
+
+
+def backtrace(start_room: RoomNode, end_room: RoomNode, visited: dict[int, int], rooms: RoomDict) -> list[str]:
+    path = []
+    cur_room = end_room
+    while cur_room is not start_room:
+        forward_dir = visited[cur_room.num]
+        forward_dir_str = directions[forward_dir]
+        back_dir_str = opposite_directions[forward_dir_str]
+        path.append(forward_dir_str)
+
+        cur_room = cur_room.exits[back_dir_str]
+        assert cur_room is not None
+
+    return path[::-1]
+
 
 
 def get_prompt(env: jericho.FrotzEnv, obs: str, done: bool, rooms: RoomDict, commands: list[str]):
@@ -143,7 +220,10 @@ def get_prompt(env: jericho.FrotzEnv, obs: str, done: bool, rooms: RoomDict, com
     items.append(room.describe())
 
     items.append("# Task")
-    items.append("Your goal is to win the game. Output a short command, one to two words, describing your next action.\nYou can move between rooms by entering the direction to move.")
+    items.append("""Your goal is to win the game.
+Output a short command, one to two words, describing your next action.
+You can move between rooms by entering the direction to move.
+To travel to a specific room, enter 'warp' followed by the name of the room.""")
     #if len(commands) > 0:
     #    items.append("Previous commands: " + ", ".join(commands))
 
