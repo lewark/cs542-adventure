@@ -1,7 +1,7 @@
 from typing import Optional
 
 import ollama
-import jericho
+from jericho import FrotzEnv, ZObject
 
 from .schema import Room, GameObject, RoomNode, room_schema, directions, short_directions, opposite_directions, dir_ids
 
@@ -34,7 +34,7 @@ Result:
 RoomDict = dict[int, RoomNode]
 
 def main():
-    env = jericho.FrotzEnv(GAME)
+    env = FrotzEnv(GAME)
 
     rooms: RoomDict = {}
 
@@ -51,21 +51,28 @@ def main():
         assert loc is not None
 
         if loc.num not in rooms:
-            room_model = extract_room_model(obs)
+            room_model = Room(name=loc.name, objects=[])
             room = RoomNode(room_model, loc.num)
             rooms[room.num] = room
+
+        room = rooms[loc.num]
+        if room.visited:
+            pass
+            #room_model = update_room_model(room.model, command, obs)
+            #room.model = room_model
+            #print(room_model)
         else:
-            room = rooms[loc.num]
-            room_model = update_room_model(room.model, command, obs)
-            print(room_model)
-            room.model = room_model
+            discover_exits(env, loc, rooms)
+            #room_model = extract_room_model(obs)
+            #room.model = room_model
+            room.visited = True
 
         update_exits(command, last_loc, loc, rooms)
         last_loc = loc
 
-        #prompt = get_prompt(env, obs, False, rooms, commands[-10:])
-        #print(prompt)
-        print(obs)
+        prompt = get_prompt(env, obs, False, rooms, commands[-10:])
+        print(prompt)
+        #print(obs)
 
         #command = get_next_command(prompt)
         #print(">", command)
@@ -99,8 +106,6 @@ def update_exits(command: str, last_loc, loc, rooms: RoomDict):
                 new_room = rooms[loc.num]
 
                 last_room.exits[direction] = new_room
-                opposite_dir = opposite_directions[direction]
-                new_room.exits[opposite_dir] = last_room
         else:
             direction = command_split[-1].lower()
             if direction in short_directions:
@@ -109,7 +114,36 @@ def update_exits(command: str, last_loc, loc, rooms: RoomDict):
                 room.exits[direction] = None
 
 
-def warp_command(rooms: RoomDict, env: jericho.FrotzEnv, loc, command_split: list[str]):
+def discover_exits(env: FrotzEnv, loc: ZObject, rooms: RoomDict):
+    room = rooms[loc.num]
+
+    state = env.get_state()
+
+    #print(loc)
+
+    for direction in directions:
+        obs, reward, done, info = env.step(direction)
+
+        new_loc = env.get_player_location()
+        #print(direction, new_loc)
+        assert new_loc is not None
+
+        if new_loc.num != loc.num:
+            if new_loc.num in rooms:
+                new_room = rooms[new_loc.num]
+            else:
+                model = Room(name=new_loc.name, objects=[])
+                new_room = RoomNode(model, new_loc.num)
+                rooms[new_room.num] = new_room
+
+            room.exits[direction] = new_room
+        else:
+            room.exits[direction] = None
+
+        env.set_state(state)
+
+
+def warp_command(rooms: RoomDict, env: FrotzEnv, loc: ZObject, command_split: list[str]):
     room_name = " ".join(command_split[1:])
     end_room = find_room_by_name(rooms, room_name)
     if end_room is None:
@@ -141,7 +175,7 @@ def update_room_model(room_model: Room, command: str, obs: str):
     return Room.model_validate_json(result.response)
 
 
-def get_next_command(prompt):
+def get_next_command(prompt: str):
     result = ollama.generate(model=MODEL, prompt=prompt)
     return result.response
 
@@ -155,7 +189,7 @@ def find_room_by_name(rooms: RoomDict, name: str) -> Optional[RoomNode]:
 
 
 def find_path(start_room: RoomNode, end_room: RoomNode, rooms: RoomDict) -> list[str]:
-    visited: dict[int, int] = {} # room, in_direction
+    visited: dict[int, tuple[int, int]] = {} # room: (in_direction, from_room)
     next_rooms: list[int] = []
 
     cur_room = start_room
@@ -166,7 +200,7 @@ def find_path(start_room: RoomNode, end_room: RoomNode, rooms: RoomDict) -> list
 
             if room.num not in visited:
                 dir_id = dir_ids[direction]
-                visited[room.num] = dir_id
+                visited[room.num] = (dir_id, cur_room.num)
                 next_rooms.append(room.num)
 
             if room is end_room:
@@ -177,23 +211,20 @@ def find_path(start_room: RoomNode, end_room: RoomNode, rooms: RoomDict) -> list
         cur_room = rooms[next_rooms.pop(0)]
 
 
-def backtrace(start_room: RoomNode, end_room: RoomNode, visited: dict[int, int], rooms: RoomDict) -> list[str]:
+def backtrace(start_room: RoomNode, end_room: RoomNode, visited: dict[int, tuple[int, int]], rooms: RoomDict) -> list[str]:
     path = []
     cur_room = end_room
     while cur_room is not start_room:
-        forward_dir = visited[cur_room.num]
-        forward_dir_str = directions[forward_dir]
-        back_dir_str = opposite_directions[forward_dir_str]
-        path.append(forward_dir_str)
+        in_dir, from_room = visited[cur_room.num]
+        in_dir_str = directions[in_dir]
+        path.insert(0, in_dir_str)
+        cur_room = rooms[from_room]
 
-        cur_room = cur_room.exits[back_dir_str]
-        assert cur_room is not None
-
-    return path[::-1]
+    return path
 
 
 
-def get_prompt(env: jericho.FrotzEnv, obs: str, done: bool, rooms: RoomDict, commands: list[str]):
+def get_prompt(env: FrotzEnv, obs: str, done: bool, rooms: RoomDict, commands: list[str]):
     items=[]
     state = env.get_state()
 
@@ -205,14 +236,14 @@ def get_prompt(env: jericho.FrotzEnv, obs: str, done: bool, rooms: RoomDict, com
         items.append("# Known rooms")
         items.extend([other_room.describe() for other_room in rooms.values() if other_room is not room])
 
-    # if not done:
-    #     look_desc, reward, done, info = env.step("look")
-    #     if not obs.endswith(look_desc):
-    #         items.append("# Current location\n" + look_desc.strip())
-
     if not done:
         inv_desc, reward, done, info = env.step("inventory")
         items.append("# Inventory\n" + inv_desc.strip())
+
+    if not done:
+        look_desc, reward, done, info = env.step("look")
+        if not obs.endswith(look_desc):
+            items.append("# Current location\n" + look_desc.strip())
 
     items.append("# Current observation\n" + obs.strip())
 
