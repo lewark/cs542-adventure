@@ -74,10 +74,10 @@ def main():
         print(prompt)
         #print(obs)
 
-        #command = get_next_command(prompt)
-        #print(">", command)
-        command = input("> ")
-        commands.append(command)
+        command = get_next_command(prompt)
+        print(">", command)
+        #command = input("> ")
+        #commands.append(command)
 
         command_split = command.split()
         if len(command_split) > 0 and command_split[0] == "warp":
