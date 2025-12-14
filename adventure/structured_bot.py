@@ -1,9 +1,11 @@
+import time
 from typing import Optional
 
 import ollama
 from jericho import FrotzEnv, ZObject
 
 from .schema import Room, GameObject, RoomNode, room_schema, directions, short_directions, opposite_directions, dir_ids
+from .metrics import ScoreTracker
 
 MODEL = "llama3.2:3b"
 GAME = "z-machine-games-master/jericho-game-suite/zork1.z5"
@@ -44,9 +46,12 @@ def main():
     command = ""
     commands = []
 
+    score_tracker = ScoreTracker(env)
+
     last_loc = None
 
     while True:
+        start_time = time.time()
         loc = env.get_player_location()
         assert loc is not None
 
@@ -75,15 +80,20 @@ def main():
         #print(obs)
 
         command = get_next_command(prompt)
+        end_time = time.time()
+
         print(">", command)
         #command = input("> ")
         #commands.append(command)
 
         command_split = command.split()
         if len(command_split) > 0 and command_split[0] == "warp":
-            warp_command(rooms, env, loc, command_split)
+            obs, info = warp_command(rooms, env, loc, command_split, info)
         else:
             obs, reward, done, info = env.step(command)
+
+        score_tracker.update(info, start_time, end_time)
+        score_tracker.get_stats(env, info)
 
         #break
 
@@ -143,9 +153,12 @@ def discover_exits(env: FrotzEnv, loc: ZObject, rooms: RoomDict):
         env.set_state(state)
 
 
-def warp_command(rooms: RoomDict, env: FrotzEnv, loc: ZObject, command_split: list[str]):
+def warp_command(rooms: RoomDict, env: FrotzEnv, loc: ZObject, command_split: list[str], info: dict):
     room_name = " ".join(command_split[1:])
     end_room = find_room_by_name(rooms, room_name)
+
+    obs = ""
+
     if end_room is None:
         obs = "Unable to find room " + room_name
     else:
@@ -158,6 +171,8 @@ def warp_command(rooms: RoomDict, env: FrotzEnv, loc: ZObject, command_split: li
                 print(obs)
         else:
             obs = "Unable to find path to " + room_name
+
+    return obs, info
 
 
 def extract_room_model(obs: str) -> Room:
