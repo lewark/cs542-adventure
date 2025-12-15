@@ -1,0 +1,717 @@
+================================[1m Human Message [0m=================================
+
+Think critically. Finish the game.
+Here are relevant items from yourpast moves:
+
+Here is your current scenario:
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (a4c54de8-0166-45cb-bcdf-95dbfcf0e3f9)
+ Call ID: a4c54de8-0166-45cb-bcdf-95dbfcf0e3f9
+  Args:
+    action: open mailbox
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Opening the small mailbox reveals a leaflet.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (673738f0-2503-4885-99d3-cc01c2f89932)
+ Call ID: 673738f0-2503-4885-99d3-cc01c2f89932
+  Args:
+    action: examine leaflet
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+"WELCOME TO ZORK!
+
+ZORK is a game of adventure, danger, and low cunning. In it you will explore some of the most amazing territory ever seen by mortals. No computer should be without one!"
+
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (2d08b021-b6ed-4798-9473-075903af4e62)
+ Call ID: 2d08b021-b6ed-4798-9473-075903af4e62
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+take leaflet, close mailbox, north, south, west
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (8651d1f8-033d-4d21-9b88-dcb0e4b798b6)
+ Call ID: 8651d1f8-033d-4d21-9b88-dcb0e4b798b6
+  Args:
+    action: open mailbox
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+It is already open.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (7ff7aff9-c061-4d50-b25b-a4c047dac9b2)
+ Call ID: 7ff7aff9-c061-4d50-b25b-a4c047dac9b2
+  Args:
+    action: north
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+North of House
+You are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (adc1d9b0-bb19-4dfc-9ee6-5820efff64dc)
+ Call ID: adc1d9b0-bb19-4dfc-9ee6-5820efff64dc
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+east, north, west
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (7d557ea0-cd89-474f-a207-25bcf4245d8f)
+ Call ID: 7d557ea0-cd89-474f-a207-25bcf4245d8f
+  Args:
+    action: east
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Behind House
+You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+   (283da843-a10d-43ce-ad21-bc7990f04940)
+ Call ID: 283da843-a10d-43ce-ad21-bc7990f04940
+  Args:
+    query: house windows
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: 
+
+Error:  is not a valid tool, try one of [remember, do_game_action, view_possible_actions].
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (afc53585-2ef6-4444-8671-b0310cba4c8f)
+ Call ID: afc53585-2ef6-4444-8671-b0310cba4c8f
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+open window, south, north, east
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (d14c8b14-626a-4ef0-a03d-fe427518d7a6)
+ Call ID: d14c8b14-626a-4ef0-a03d-fe427518d7a6
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+open window, south, north, east
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Split docs into 0 sub-documents.
+================================[1m Human Message [0m=================================
+
+Think critically. Finish the game.
+Here are relevant items from yourpast moves:
+Source: {'move': 5, 'start_index': 0}
+Content: Behind House
+You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.
+
+Source: {'move': 4, 'start_index': 0}
+Content: North of House
+You are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.
+Here is your current scenario:
+Behind House
+You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.
+
+
+Split docs into 2 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (434b175d-9e34-4d67-9e41-af88153337a5)
+ Call ID: 434b175d-9e34-4d67-9e41-af88153337a5
+  Args:
+    action: go east
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Clearing
+You are in a small clearing in a well marked forest path that extends to the east and west.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (142d142b-4245-4960-91bf-3e71dc119931)
+ Call ID: 142d142b-4245-4960-91bf-3e71dc119931
+  Args:
+    action: search pedestal
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any pedestal here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (56c0c858-490f-4184-a4e4-39e23c0c4134)
+ Call ID: 56c0c858-490f-4184-a4e4-39e23c0c4134
+  Args:
+    action: go west
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Behind House
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (01c66f4e-1b71-4f0a-843a-41ffb7128089)
+ Call ID: 01c66f4e-1b71-4f0a-843a-41ffb7128089
+  Args:
+    action: look window
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+That sentence isn't one I recognize.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (f9c96d47-eea0-4c1b-8980-6e705bc25b2f)
+ Call ID: f9c96d47-eea0-4c1b-8980-6e705bc25b2f
+  Args:
+    action: open window
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+With great effort, you open the window far enough to allow entry.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (ddec4687-7ec8-46fb-9881-3be826269264)
+ Call ID: ddec4687-7ec8-46fb-9881-3be826269264
+  Args:
+    action: enter
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Kitchen
+You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (2be20764-6810-4ccd-baf9-59a5fe803e87)
+ Call ID: 2be20764-6810-4ccd-baf9-59a5fe803e87
+  Args:
+    action: go up
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+   (d60f1027-9980-4752-a890-eb7599e9557e)
+ Call ID: d60f1027-9980-4752-a890-eb7599e9557e
+  Args:
+    query: what we have so far?
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: 
+
+Error:  is not a valid tool, try one of [remember, do_game_action, view_possible_actions].
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (e7311a57-6f4f-4ebc-9aec-327033c7b3f3)
+ Call ID: e7311a57-6f4f-4ebc-9aec-327033c7b3f3
+  Args:
+    action: search table
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+It's too dark to see!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do (fac2b18a-91fe-481d-a906-50a09fe1b7fb)
+ Call ID: fac2b18a-91fe-481d-a906-50a09fe1b7fb
+  Args:
+    action: go west
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do
+
+Error: do is not a valid tool, try one of [remember, do_game_action, view_possible_actions].
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (74247b0b-71aa-42d5-a68c-01f9bec4a4ad)
+ Call ID: 74247b0b-71aa-42d5-a68c-01f9bec4a4ad
+  Args:
+    action: open sack
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+It's too dark to see!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (8765e716-ea1f-4dbb-9000-c6a37b5ec9ab)
+ Call ID: 8765e716-ea1f-4dbb-9000-c6a37b5ec9ab
+  Args:
+    action: look east
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You used the word "east" in a way that I don't understand.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (c0885ec9-ad6d-431d-aca4-15555b314b78)
+ Call ID: c0885ec9-ad6d-431d-aca4-15555b314b78
+  Args:
+    action: look
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+It is pitch black. You are likely to be eaten by a grue.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (97d7a024-593c-4494-8769-85aa00107e32)
+ Call ID: 97d7a024-593c-4494-8769-85aa00107e32
+  Args:
+    action: go down
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Kitchen
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+
+{"action":"go west"}
+Split docs into 1 sub-documents.
+================================[1m Human Message [0m=================================
+
+Think critically. Finish the game.
+Here are relevant items from yourpast moves:
+Source: {'move': 13, 'start_index': 0}
+Content: Kitchen
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+Source: {'move': 10, 'start_index': 0}
+Content: Kitchen
+You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+Here is your current scenario:
+Kitchen
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+
+Split docs into 3 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (8f4e754c-6cc4-4a8d-a017-7d7deb1eec5c)
+ Call ID: 8f4e754c-6cc4-4a8d-a017-7d7deb1eec5c
+  Args:
+    action: take sack
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Taken.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (16d4de3f-16de-4f09-8550-e7e03d1d61a7)
+ Call ID: 16d4de3f-16de-4f09-8550-e7e03d1d61a7
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+jump, east, open bottle, open sack, take bottle, up, close window, put down sack, put sack on table, west
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (ec1ce4df-88c7-418e-8e4c-e41eaca0c722)
+ Call ID: ec1ce4df-88c7-418e-8e4c-e41eaca0c722
+  Args:
+    action: west
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Living Room
+You are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room.
+Above the trophy case hangs an elvish sword of great antiquity.
+A battery-powered brass lantern is on the trophy case.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (c9922469-4f4a-4661-91dc-889ee61d4946)
+ Call ID: c9922469-4f4a-4661-91dc-889ee61d4946
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+turn on lantern, open sack, open case, take sword, take lantern, take all, put down sack, push rug, throw sack at lantern, east
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (0cc4b7d4-0deb-4f4e-b8c6-1600b0e507c6)
+ Call ID: 0cc4b7d4-0deb-4f4e-b8c6-1600b0e507c6
+  Args:
+    action: east
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Kitchen
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (0b6b0917-97f5-44b5-8150-ac24632ed7a4)
+ Call ID: 0b6b0917-97f5-44b5-8150-ac24632ed7a4
+  Args:
+    action: open sack
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Opening the brown sack reveals a lunch, and a clove of garlic.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (1c5de196-bf81-4744-a686-73ba1f0b8d1e)
+ Call ID: 1c5de196-bf81-4744-a686-73ba1f0b8d1e
+  Args:
+    action: take sword
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any sword here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (befe101e-6a18-4ac4-aefe-4e0b5e184fc9)
+ Call ID: befe101e-6a18-4ac4-aefe-4e0b5e184fc9
+  Args:
+    action: open case
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any case here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+
+We need finish the game. We are in Kitchen. We have a sack with lunch and garlic. Bottle water. We need to get into other rooms. We need to exit building. In living room, there is a wooden door with strange gothic lettering to the west, nailed shut. Need to use something to unlock. In original Zork, the path: from Kitchen to Living Room to Hallway, etc. We need to find a key? There's a battery-powered brass lantern on trophy case. Could use to light? Maybe we need to open a locked door with a key. We currently have a lunch and garlic. The garlic might be used to attract a monster? But we are in Kitchen, still can use the water bottle? In Zork, there is a hidden item: the "bottle" can be "empty"? Maybe we need to get a "key" from a "cafe"? But we haven't explored. Let's see possible actions: We can take the bottle, open bottle, take the sack (already have). We might need to get a key. In Zork, the key to the front door is in a desk in the hall? Let's see: We need to go to the "Hallway" from living room by opening door to east? Actually living room has doorway east back to Kitchen, door west to front? Wait: living room description: "There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room." So we are in living room. The wooden door west is the front door to exit. It is nailed shut. We need to find a key or something to unbolt it. The "Key" is probably in the "desk" in the Hall? Let's explore further.
+
+We can try to push rug? In living room, we can push rug. That might reveal something. Let's try "push rug".
+Tool Calls:
+  do_game_action (2b02518d-4dc5-4942-a4ec-30292a317a38)
+ Call ID: 2b02518d-4dc5-4942-a4ec-30292a317a38
+  Args:
+    action: push rug
+Split docs into 5 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any rug here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (8340b667-26cb-4d5a-ac0d-14713edc1f07)
+ Call ID: 8340b667-26cb-4d5a-ac0d-14713edc1f07
+  Args:
+    action: take lantern
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any lantern here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (86e76b33-c0d1-48bd-9f79-044ff58377c1)
+ Call ID: 86e76b33-c0d1-48bd-9f79-044ff58377c1
+  Args:
+    action: turn on lantern
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any lantern here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (46e86584-6b79-456f-934c-7979e5e95fbd)
+ Call ID: 46e86584-6b79-456f-934c-7979e5e95fbd
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+jump, east, open bottle, take bottle, take food, take garlic, up, close window, close sack, put down sack, put down food, put down garlic, shake sack, put sack on table, put food on table, put garlic on table, take all from sack, west
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (c28bdb63-b96d-4628-89bb-32b5817a7e24)
+ Call ID: c28bdb63-b96d-4628-89bb-32b5817a7e24
+  Args:
+    action: take food
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Taken.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (dd36759a-01ca-4970-993d-88fa229ba6d2)
+ Call ID: dd36759a-01ca-4970-993d-88fa229ba6d2
+  Args:
+    action: take garlic
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Taken.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (0eb0f40c-971b-4020-9893-e135cc31b878)
+ Call ID: 0eb0f40c-971b-4020-9893-e135cc31b878
+  Args:
+    action: open bottle
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Opened.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (f83517e4-92b4-4fbc-90d2-98d9cfcac6e8)
+ Call ID: f83517e4-92b4-4fbc-90d2-98d9cfcac6e8
+  Args:
+    action: drink
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+(quantity of water)
+You have to be holding the glass bottle first.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (5abb896b-1935-48d5-a28c-632b8bcb6eea)
+ Call ID: 5abb896b-1935-48d5-a28c-632b8bcb6eea
+  Args:
+    action: take bottle
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+Taken.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (024df7c3-133f-4a65-91d0-8f082f5a4e6a)
+ Call ID: 024df7c3-133f-4a65-91d0-8f082f5a4e6a
+  Args:
+    action: drink
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+(quantity of water)
+Thank you very much. I was rather thirsty (from all this talking, probably).
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  view_possible_actions (638f6aa1-3432-4495-870d-330dcf1ed7ea)
+ Call ID: 638f6aa1-3432-4495-870d-330dcf1ed7ea
+  Args:
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: view_possible_actions
+
+jump, east, up, close bottle, close window, close sack, put down bottle, put down garlic, put down sack, put down food, put down all, put bottle on table, put bottle in sack, put garlic on table, put garlic in sack, put sack on table, put sack in bottle, put food on table, put food in sack, put all on table, put all in sack, west
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (b24bb7cc-1246-4287-8b43-b147b25ad13f)
+ Call ID: b24bb7cc-1246-4287-8b43-b147b25ad13f
+  Args:
+    action: open wooden door
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You can't see any wooden door here!
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (5b9ee40c-5657-4dcd-9d95-1cadfa215b10)
+ Call ID: 5b9ee40c-5657-4dcd-9d95-1cadfa215b10
+  Args:
+    action: up
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (ae0f8d64-f2ee-49b0-b9f6-66cb6c27d47a)
+ Call ID: ae0f8d64-f2ee-49b0-b9f6-66cb6c27d47a
+  Args:
+    action: light
+Split docs into 0 sub-documents.
+=================================[1m Tool Message [0m=================================
+Name: do_game_action
+
+What do you want to light?
+
+
+Split docs into 1 sub-documents.
+==================================[1m Ai Message [0m==================================
+Tool Calls:
+  do_game_action (02d22cbc-7dee-4387-b79d-576cb03636dd)
+ Call ID: 02d22cbc-7dee-4387-b79d-576cb03636dd
+  Args:
+    action: west
+Split docs into 0 sub-documents.
+{'unique_rooms': 7, 'unique_items': 4, 'unique_hashes': 17, 'score': 10, 'max_score': 350, 'avg_retries': 36.0, 'avg_generate_time': 11.819121100902557}
