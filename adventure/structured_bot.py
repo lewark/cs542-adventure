@@ -62,14 +62,14 @@ def main():
 
         room = rooms[loc.num]
         if room.visited:
-            pass
-            #room_model = update_room_model(room.model, command, obs)
-            #room.model = room_model
+            #pass
+            room_model = update_room_model(room.model, command, obs)
+            room.model = room_model
             #print(room_model)
         else:
             discover_exits(env, loc, rooms)
-            #room_model = extract_room_model(obs)
-            #room.model = room_model
+            room_model = extract_room_model(obs)
+            room.model = room_model
             room.visited = True
 
         update_exits(command, last_loc, loc, rooms)
