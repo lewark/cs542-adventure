@@ -1,31 +1,21 @@
 import time
 
-import jericho
+from jericho import FrotzEnv
 
 from .prompt import get_prompt
+from .metrics import ScoreTracker
+
 
 def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int):
-    env = jericho.FrotzEnv(game_filename)
+    env = FrotzEnv(game_filename)
 
     messages = []
-    
+
     obs, info = env.reset()
     print(obs)
-    
-    unique_hashes = set()
-    unique_rooms = set()
-    unique_items = set()
-    
-    unique_rooms.add(env.get_player_location().name)
-    unique_hashes.add(env.get_world_state_hash())
-    for item in env.get_inventory():
-        unique_items.add(item.name)
 
-    prev_score = -1
-    total_steps = 0
-    retries = 0
-    retries_per_score = []
-    generate_times = []
+    score_tracker = ScoreTracker(env)
+    done = False
 
     for i in range(n_steps):
         if len(messages) > history:
@@ -34,45 +24,24 @@ def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int):
 
         prompt = get_prompt(env, obs, done)
         messages.append(make_message("user", prompt))
-        
-        start = time.time()
+
+        start_time = time.time()
         response = generate_response(model, tokenizer, messages)
-        generate_times.append(time.time() - start)
+        end_time = time.time()
 
         print(">", response)
         messages.append(make_message("assistant", response))
-        
+
         obs, reward, done, info = env.step(response)
         print(obs)
 
-        unique_rooms.add(env.get_player_location().name)
-        unique_hashes.add(env.get_world_state_hash())
-        for item in env.get_inventory():
-            unique_items.add(item.name)
-
-        retries += 1
-        if info["score"] != prev_score:
-            retries_per_score.append(retries)
-            retries = 0
-        prev_score = info["score"]
-        total_steps += 1
+        score_tracker.update(info, start_time, end_time)
 
         if done:
             break
-    
-    stats = {
-        'unique_rooms': len(unique_rooms),
-        'unique_hashes': len(unique_hashes),
-        'unique_items': len(unique_items),
-        'score': info['score'],
-        'max_score': env.get_max_score(),
-        'avg_retries': sum(retries_per_score) / max(len(retries_per_score), 1),
-        'avg_generate_time': sum(generate_times) / len(generate_times),
-    }
-    print(stats)
-    
+
     env.close()
-    return stats
+    return score_tracker.get_stats(env, info)
 
 
 def make_message(role, content):
@@ -96,14 +65,14 @@ def generate_response(model, tokenizer, messages):
     out = tokenizer.batch_decode(output_ids)
 
     #print(out)
-    
+
     out_line = out[0]
     start_token = "<|end_header_id|>"
     end_token = tokenizer.eos_token
-    
+
     start_index = out_line.rindex(start_token) + len(start_token)
     end_index = out_line.rindex(end_token)
-    
+
     return out_line[start_index : end_index].strip()
 
 
@@ -112,5 +81,5 @@ if __name__ == "__main__":
     from unsloth import FastLanguageModel
     model, tokenizer = load_model("grpo_model_2", "llama-3.2")
     FastLanguageModel.for_inference(model)
-    
+
     run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, history=10)
