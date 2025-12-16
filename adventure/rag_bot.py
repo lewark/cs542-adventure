@@ -13,7 +13,7 @@ from adventure.pathfind import warp_command
 from adventure.schema import Room
 from adventure.structured_bot import extract_room_model, update_room_model
 
-from .graph import RoomDict, RoomNode, discover_exits, update_exits
+from .graph import NAMES_FROM_DESCRIPTIONS, RoomDict, RoomNode, discover_exits, update_exits
 
 CHAT_MODEL = "llama3.2:3b"
 EMBEDDING_MODEL = "nomic-embed-text"
@@ -80,16 +80,17 @@ class Game:
 
             last_loc = loc
 
+            documents = self.traversal_retriever.invoke(loc_desc)
+            print("RAG results:", documents)
+
             prompt = self.get_prompt(obs, command, loc_desc)
             print(prompt)
             #print(obs)
 
             command = self.get_next_command(prompt)
-            end_time = time.time()
-
             print(">", command)
             #command = input("> ")
-            #commands.append(command)
+            end_time = time.time()
 
             command_split = command.split()
             if len(command_split) > 0 and command_split[0] == "warp":
@@ -114,7 +115,10 @@ class Game:
 
         room = self.rooms[loc.num]
 
-        room.description = loc_desc
+        room.description = loc_desc.strip()
+        if NAMES_FROM_DESCRIPTIONS:
+            room.model.name = loc_desc.split("\n")[0].strip()
+
         if room.visited:
             self.vector_store.delete([room.get_doc_id()])
             #room_model = update_room_model(room.model, command, obs)
@@ -147,7 +151,7 @@ class Game:
             events.append(event)
 
         content = events[-1]["messages"][-1].content
-        print(content)
+        #print(content)
         return content
 
 

@@ -6,6 +6,11 @@ from langchain_core.documents import Document
 from .schema import Room
 
 
+# Obtain room names from the first line of their descriptions.
+# This works for Zork but may be incorrect for other games.
+NAMES_FROM_DESCRIPTIONS = True
+
+
 directions = ["north", "south", "east", "west", "up", "down"]
 opposite_directions = {"north":"south", "south":"north", "east":"west", "west":"east", "up":"down", "down": "up"}
 short_directions = {direction[0]: direction for direction in directions}
@@ -44,8 +49,16 @@ class RoomNode:
         return "\n\n".join(items)
 
     def to_document(self) -> Document:
-        exits = [node.get_doc_id() for node in self.exits.values() if node is not None]
-        return Document(id=self.get_doc_id(), page_content=self.description, metadata={"name": self.model.name, "exits": exits})
+        exits: list[str] = []
+        exit_directions: list[str] = []
+
+        for direction, other_room in self.exits.items():
+            if other_room is not None:
+                exits.append(other_room.get_doc_id())
+                exit_directions.append(direction)
+
+        doc_id = self.get_doc_id()
+        return Document(id=doc_id, page_content=self.description, metadata={"name": self.model.name, "exits": exits, "exit_directions": exit_directions})
 
     def get_doc_id(self) -> str:
         return str(self.num)
@@ -96,8 +109,15 @@ def discover_exits(env: FrotzEnv, loc: ZObject, rooms: RoomDict):
             if new_loc.num in rooms:
                 new_room = rooms[new_loc.num]
             else:
-                model = Room(name=new_loc.name, objects=[])
+                loc_desc, _, _, _ = env.step("look")
+                if NAMES_FROM_DESCRIPTIONS:
+                    loc_name: str = loc_desc.split("\n")[0].strip()
+                else:
+                    loc_name = loc.name
+
+                model = Room(name=loc_name, objects=[])
                 new_room = RoomNode(model, new_loc.num)
+                new_room.description = loc_desc
                 rooms[new_room.num] = new_room
 
             room.exits[direction] = new_room
