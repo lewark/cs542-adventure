@@ -1,0 +1,5 @@
+pydantic
+ollama
+langchain
+langchain-graph-retriever
+langchain-ollama
