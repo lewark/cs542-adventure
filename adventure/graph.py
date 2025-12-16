@@ -1,6 +1,7 @@
 from typing import Optional
 
 from jericho import FrotzEnv, ZObject
+from langchain_core.documents import Document
 
 from .schema import Room
 
@@ -14,6 +15,7 @@ dir_ids = {dirname: index for index, dirname in enumerate(directions)}
 class RoomNode:
     model: Room
     num: int
+    description: str
     exits: dict[str, Optional["RoomNode"]]
     visited: bool
 
@@ -41,11 +43,14 @@ class RoomNode:
 
         return "\n\n".join(items)
 
+    def to_document(self):
+        return Document(id=str(self.num), page_content=self.description)
+
 
 RoomDict = dict[int, RoomNode]
 
 
-def update_exits(command: str, last_loc, loc, rooms: RoomDict):
+def update_exits(command: str, last_loc: Optional[ZObject], loc: ZObject, rooms: RoomDict):
     room = rooms[loc.num]
     command_split = command.split()
 
