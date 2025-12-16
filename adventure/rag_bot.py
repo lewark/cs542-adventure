@@ -49,8 +49,8 @@ class Game:
         # https://docs.langchain.com/oss/python/integrations/retrievers/graph_rag#inmemory
         self.traversal_retriever = GraphRetriever(
             store=self.vector_store,
-            edges = [],
-            strategy = Eager(k=5, start_k=1, max_depth=2)
+            edges=[("exits", "$id")],
+            strategy=Eager(select_k=5, start_k=1, max_depth=2)
         )
 
         self.env = FrotzEnv(GAME)
@@ -74,11 +74,13 @@ class Game:
             loc = self.env.get_player_location()
             assert loc is not None
 
-            self.update_rooms(command, loc, last_loc)
+            loc_desc, _, _, _ = self.env.step("look")
+
+            self.update_rooms(command, loc, last_loc, loc_desc)
 
             last_loc = loc
 
-            prompt = self.get_prompt(obs, command)
+            prompt = self.get_prompt(obs, command, loc_desc)
             print(prompt)
             #print(obs)
 
@@ -104,15 +106,17 @@ class Game:
             #room_model = extract_room_mode
 
 
-    def update_rooms(self, command: str, loc: ZObject, last_loc: Optional[ZObject]):
+    def update_rooms(self, command: str, loc: ZObject, last_loc: Optional[ZObject], loc_desc: str):
         if loc.num not in self.rooms:
             room_model = Room(name=loc.name, objects=[])
             room = RoomNode(room_model, loc.num)
             self.rooms[room.num] = room
 
         room = self.rooms[loc.num]
+
+        room.description = loc_desc
         if room.visited:
-            pass
+            self.vector_store.delete([room.get_doc_id()])
             #room_model = update_room_model(room.model, command, obs)
             #room_model = Room()
             #room.model = room_model
@@ -125,13 +129,14 @@ class Game:
             room.visited = True
 
         update_exits(command, last_loc, loc, self.rooms)
+        self.vector_store.add_documents([room.to_document()])
 
 
-    def get_prompt(self, obs: str, prev_command: str):
-        room_desc, _, _, _ = self.env.step("look")
+    def get_prompt(self, obs: str, prev_command: str, loc_desc: str):
+        #room_desc, _, _, _ = self.env.step("look")
         inv_desc, _, _, _ = self.env.step("inventory")
 
-        return PROMPT_TEMPLATE.format(room_desc.strip(), inv_desc.strip(), prev_command, obs.strip())
+        return PROMPT_TEMPLATE.format(loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip())
 
     def get_next_command(self, prompt: str):
         events = []

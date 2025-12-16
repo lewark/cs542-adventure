@@ -43,8 +43,12 @@ class RoomNode:
 
         return "\n\n".join(items)
 
-    def to_document(self):
-        return Document(id=str(self.num), page_content=self.description)
+    def to_document(self) -> Document:
+        exits = [node.get_doc_id() for node in self.exits.values() if node is not None]
+        return Document(id=self.get_doc_id(), page_content=self.description, metadata={"name": self.model.name, "exits": exits})
+
+    def get_doc_id(self) -> str:
+        return str(self.num)
 
 
 RoomDict = dict[int, RoomNode]
