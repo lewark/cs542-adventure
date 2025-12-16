@@ -19,7 +19,11 @@ CHAT_MODEL = "llama3.2:3b"
 EMBEDDING_MODEL = "nomic-embed-text"
 GAME = "z-machine-games-master/jericho-game-suite/zork1.z5"
 
-PROMPT_TEMPLATE = """# Location
+PROMPT_TEMPLATE = """# Knowledge
+
+{}
+
+# Location
 
 {}
 
@@ -34,6 +38,7 @@ Previous command: {}
 Result:
 {}
 
+Valid actions: {}
 What action do you take next?"""
 SYSTEM_PROMPT = "You are playing a text adventure game. Output short one to two word commands to advance through the game."
 
@@ -80,10 +85,10 @@ class Game:
 
             last_loc = loc
 
-            documents = self.traversal_retriever.invoke(loc_desc)
+            documents = self.traversal_retriever.invoke(loc_desc, config={})
             print("RAG results:", documents)
 
-            prompt = self.get_prompt(obs, command, loc_desc)
+            prompt = self.get_prompt(documents, obs, command, loc_desc)
             print(prompt)
             #print(obs)
 
@@ -100,6 +105,8 @@ class Game:
 
             score_tracker.update(info, start_time, end_time)
             score_tracker.get_stats(self.env, info)
+            
+            # time.sleep(1)
 
             #break
 
@@ -136,11 +143,17 @@ class Game:
         self.vector_store.add_documents([room.to_document()])
 
 
-    def get_prompt(self, obs: str, prev_command: str, loc_desc: str):
+    def get_prompt(self, documents, obs: str, prev_command: str, loc_desc: str):
         #room_desc, _, _, _ = self.env.step("look")
         inv_desc, _, _, _ = self.env.step("inventory")
+        
+        ROOM_DESC_TEMPLATE = '## Description for "{}" location:\n{}'
+        
+        knowledge = '\n'.join(ROOM_DESC_TEMPLATE.format(x.metadata['name'], x.page_content) for x in documents)
+        
+        valid_actions = ', '.join(self.env.get_valid_actions())
 
-        return PROMPT_TEMPLATE.format(loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip())
+        return PROMPT_TEMPLATE.format(knowledge, loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip(), valid_actions)
 
     def get_next_command(self, prompt: str):
         events = []

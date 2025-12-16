@@ -39,6 +39,7 @@ class ScoreTracker:
 
     def get_stats(self, env: FrotzEnv, info: dict):
         stats = {
+            'moves': info['moves'],
             'unique_rooms': len(self.unique_rooms),
             'unique_hashes': len(self.unique_hashes),
             'unique_items': len(self.unique_items),
