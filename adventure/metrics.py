@@ -37,7 +37,7 @@ class ScoreTracker:
 
         self.generate_times.append(end_time - start_time)
 
-    def get_stats(self, env: FrotzEnv, info: dict):
+    def get_stats(self, env: FrotzEnv, info: dict, print_output: bool = True):
         stats = {
             'moves': info['moves'],
             'unique_rooms': len(self.unique_rooms),
@@ -48,5 +48,6 @@ class ScoreTracker:
             'avg_retries': sum(self.retries_per_score) / max(len(self.retries_per_score), 1),
             'avg_generate_time': sum(self.generate_times) / len(self.generate_times),
         }
-        print(stats)
+        if print_output:
+            print(stats)
         return stats

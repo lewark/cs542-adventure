@@ -10,7 +10,15 @@ from .dataset import get_dataset, format_dataset
 from .model import load_model, save_model, max_seq_length
 
 
-def make_trainer(model, tokenizer, dataset):
+# Import some boilerplate code for loading/saving models
+from adventure.model import load_model, save_model, max_seq_length
+
+# This code is adapted from the Unsloth fine-tuning tutorial and notebooks located here:
+# https://docs.unsloth.ai/get-started/fine-tuning-llms-guide/tutorial-how-to-finetune-llama-3-and-use-in-ollama
+# https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.2_(1B_and_3B)-Conversational.ipynb
+
+
+def make_trainer(model, tokenizer, dataset, max_steps: int = 240):
     enable_bf16 = is_bfloat16_supported()
 
     trainer = SFTTrainer(
@@ -26,7 +34,7 @@ def make_trainer(model, tokenizer, dataset):
             per_device_train_batch_size = 2,
             gradient_accumulation_steps = 4,
             warmup_steps = 5,
-            max_steps = 240, #60,
+            max_steps = max_steps, #60,
             # num_train_epochs = 1,
             learning_rate = 2e-4,
             fp16 = not enable_bf16,
@@ -62,10 +70,10 @@ if __name__ == "__main__":
     model, tokenizer = load_model("unsloth/Llama-3.2-3B-Instruct-bnb-4bit", "llama-3.2")
     dataset = format_dataset(tokenizer, dataset)
 
-    trainer = make_trainer(model, tokenizer, dataset)
+    trainer = make_trainer(model, tokenizer, dataset, max_steps=500)
     trainer_stats = trainer.train()
 
-    save_model(model, tokenizer, "lora_model_2")
+    save_model(model, tokenizer, "lora_model_result")
 
     from unsloth import FastLanguageModel
     #model, tokenizer = load_model("lora_model", "llama-3.2")

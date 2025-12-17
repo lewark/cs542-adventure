@@ -3,6 +3,7 @@ from .prompt import get_prompt
 
 
 def get_steps(filename: str):
+    """ Return a sequence of (observation, action) pairs needed to complete a game. """
     env = jericho.FrotzEnv(filename)
     
     initial_obs, info = env.reset()
@@ -13,7 +14,7 @@ def get_steps(filename: str):
     done = False
     obs = initial_obs
     for step in walkthrough:
-        prompt = get_prompt(env, obs, done)
+        prompt = get_prompt(env, obs, done, include_actions=True)
         steps.append((prompt, step))
         #print(obs, step)
         obs, reward, done, info = env.step(step)
@@ -30,6 +31,11 @@ from datasets import Dataset
 #from unsloth import standardize_sharegpt
 
 def steps_to_dataset(steps: list[list[tuple[str, str]]], length: int, overlap: bool = True):
+    """
+    Convert a sequence of game steps to a dataset of windowed conversations,
+    where the user prompt is the environment observation and the assistant response
+    is the command to execute.
+    """
     convos = []
 
     for game in steps:
@@ -69,6 +75,8 @@ def get_dataset(game_files: list[str], length: int, overlap: bool):
 
 
 def format_dataset(tokenizer, dataset):
+    """ Apply the model-specific chat template to a dataset. """
+
     def formatting_prompts_func(examples):
         convos = examples["conversations"]
         texts = [

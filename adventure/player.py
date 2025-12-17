@@ -6,7 +6,7 @@ from .prompt import get_prompt
 from .metrics import ScoreTracker
 
 
-def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int):
+def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int, include_actions: bool = True):
     env = FrotzEnv(game_filename)
 
     messages = []
@@ -22,7 +22,7 @@ def run_game(model, tokenizer, game_filename: str, n_steps: int, history: int):
             messages.pop(0)
             messages.pop(0)
 
-        prompt = get_prompt(env, obs, done)
+        prompt = get_prompt(env, obs, done, include_actions)
         messages.append(make_message("user", prompt))
 
         start_time = time.time()
