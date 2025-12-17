@@ -85,7 +85,7 @@ class Game:
 
             last_loc = loc
 
-            documents = self.traversal_retriever.invoke(loc_desc, config={})
+            documents = self.traversal_retriever.invoke(loc_desc)
             print("RAG results:", documents)
 
             prompt = self.get_prompt(documents, obs, command, loc_desc)

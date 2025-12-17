@@ -19,11 +19,7 @@ CHAT_MODEL = "llama3.2:3b"
 EMBEDDING_MODEL = "nomic-embed-text"
 GAME = "z-machine-games-master/jericho-game-suite/zork1.z5"
 
-PROMPT_TEMPLATE = """# Knowledge
-
-{}
-
-# Location
+PROMPT_TEMPLATE = """# Location
 
 {}
 
@@ -40,7 +36,8 @@ Result:
 
 Valid actions: {}
 What action do you take next?"""
-SYSTEM_PROMPT = "You are playing a text adventure game. Output short one to two word commands to advance through the game."
+THINKING_SYSTEM_PROMPT = "You are playing a text adventure game. You want to complete the game."
+ACTION_SYSTEM_PROMPT = "You are playing a text adventure game. Output short one to two word commands to advance through the game."
 
 
 class Game:
@@ -49,7 +46,13 @@ class Game:
         self.embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
         self.vector_store = InMemoryVectorStore(self.embeddings)
 
-        self.agent = create_agent(model=self.model, tools=None, system_prompt=SYSTEM_PROMPT)
+        self.ponder_agent = create_agent(model=self.model, tools=None, system_prompt=THINKING_SYSTEM_PROMPT)
+        self.ponder_memory = []
+        self.ponder_max_memory = 25 # 5 steps * 5 events per step
+
+        self.action_agent = create_agent(model=self.model, tools=None, system_prompt=ACTION_SYSTEM_PROMPT)
+        self.action_memory = []
+        self.action_max_memory = 10 # 5 steps * 2 events per step
 
         # https://docs.langchain.com/oss/python/integrations/retrievers/graph_rag#inmemory
         self.traversal_retriever = GraphRetriever(
@@ -67,7 +70,6 @@ class Game:
         #print(obs, info)
 
         command = ""
-        commands = []
 
         score_tracker = ScoreTracker(self.env)
 
@@ -80,21 +82,29 @@ class Game:
             assert loc is not None
 
             loc_desc, _, _, _ = self.env.step("look")
+            inv_desc, _, _, _ = self.env.step("inventory")
 
             self.update_rooms(command, loc, last_loc, loc_desc)
 
             last_loc = loc
 
-            documents = self.traversal_retriever.invoke(loc_desc, config={})
-            print("RAG results:", documents)
+            ### NEW
 
-            prompt = self.get_prompt(documents, obs, command, loc_desc)
-            print(prompt)
-            #print(obs)
+            goal, assets, knowledge = self.ponder(loc_desc, inv_desc, obs)
 
-            command = self.get_next_command(prompt)
+            valid_actions = ', '.join(self.env.get_valid_actions()) + ', warp <location>'
+            prompt3 = f'# Last Action Result:\n{obs}\n\n# Knowledge:\n{knowledge}\n\n# Goal: {goal}\n\n# Notes:\n{assets}\n\nAll possible actions: {valid_actions}\n\nGiven what you have observed about your current game state, what is your next action to move toward your goal?'
+            print(prompt3)
+            command = self.get_next_command(prompt3)
             print(">", command)
-            #command = input("> ")
+            ###
+
+            
+
+            # prompt = self.get_prompt(obs, command, loc_desc, inv_desc)
+            # print(prompt3)
+            # command = self.get_next_command(prompt)
+            # print(">", command)
             end_time = time.time()
 
             command_split = command.split()
@@ -106,6 +116,12 @@ class Game:
             score_tracker.update(info, start_time, end_time)
             score_tracker.get_stats(self.env, info)
             
+            # Truncate Memory
+            if len(self.ponder_memory) > self.ponder_max_memory:
+                self.ponder_memory = self.ponder_memory[-self.ponder_max_memory:]
+            if len(self.action_memory) > self.action_max_memory:
+                self.action_memory = self.action_memory[-self.action_max_memory:]
+
             # time.sleep(1)
 
             #break
@@ -143,27 +159,52 @@ class Game:
         self.vector_store.add_documents([room.to_document()])
 
 
-    def get_prompt(self, documents, obs: str, prev_command: str, loc_desc: str):
-        #room_desc, _, _, _ = self.env.step("look")
-        inv_desc, _, _, _ = self.env.step("inventory")
-        
-        ROOM_DESC_TEMPLATE = '## Description for "{}" location:\n{}'
-        
-        knowledge = '\n'.join(ROOM_DESC_TEMPLATE.format(x.metadata['name'], x.page_content) for x in documents)
-        
+    def get_prompt(self, obs: str, prev_command: str, loc_desc: str, inv_desc: str):        
+                
         valid_actions = ', '.join(self.env.get_valid_actions())
 
-        return PROMPT_TEMPLATE.format(knowledge, loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip(), valid_actions)
+        return PROMPT_TEMPLATE.format(loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip(), valid_actions)
+
+    def ponder(self, loc_desc: str, inv_desc: str, obs: str):
+        prompt1 = f'# Location:\n{loc_desc}\n\n# Last Action Result:\n{obs}\n\nPrompt: You need to finish the game. Describe your overarching goal and your single most pressing short-term goal. Keep it concise.'
+        events = [event for event in self.ponder_agent.stream(
+            {"messages": [*self.ponder_memory, {"role": "user", "content": prompt1}]},
+            stream_mode="values"
+        )]
+        goal_messages = events[-1]["messages"]
+        self.ponder_memory.extend(goal_messages[-2:])
+        goal = goal_messages[-1].content
+        # print("Goal results:", goal)
+
+        prompt2 = f'# Location:\n{loc_desc}\n\n# Inventory:\n{inv_desc}\n\n# Last Action Result:\n{obs}\n\n# Goal: {goal}\n\nPrompt: List key new information you just learned after your previous action, important aspects of your surroundings in-game, and information about the most important tools you have at your disposal. Make it a concise summary.'
+        events = [event for event in self.ponder_agent.stream(
+            {"messages": [*self.ponder_memory, {"role": "user", "content": prompt2}]},
+            stream_mode="values"
+        )]
+        assets_messages = events[-1]["messages"]
+        self.ponder_memory.extend(assets_messages[-2:])
+        assets = assets_messages[-1].content
+        # print("Summary results:", assets)
+
+        documents = self.traversal_retriever.invoke(assets)
+        # print("RAG results:", documents)
+        ROOM_DESC_TEMPLATE = '## Description for "{}":\n{}'
+        knowledge = '\n'.join(ROOM_DESC_TEMPLATE.format(x.metadata['name'], x.page_content) for x in documents)
+
+        return goal, assets, knowledge
 
     def get_next_command(self, prompt: str):
         events = []
-        for event in self.agent.stream(
+        for event in self.action_agent.stream(
             {"messages": [{"role": "user", "content": prompt}]},
             stream_mode="values"
         ):
             events.append(event)
 
-        content = events[-1]["messages"][-1].content
+        action_messages = events[-1]["messages"]
+        self.action_memory.extend(action_messages[-2:])
+        self.ponder_memory.append(action_messages[-1])
+        content = action_messages[-1].content
         #print(content)
         return content
 
