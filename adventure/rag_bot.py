@@ -3,6 +3,7 @@ from typing import Optional
 
 from graph_retriever.strategies import Eager
 from langchain.agents import create_agent
+from langchain.messages import HumanMessage
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_graph_retriever import GraphRetriever
@@ -42,6 +43,9 @@ Valid actions: {}
 What action do you take next?"""
 SYSTEM_PROMPT = "You are playing a text adventure game. Output short one to two word commands to advance through the game."
 
+ROOM_OBJECT_PROMPT = """List all nouns contained in this location. Only output them on one line, separated by commas.
+
+{}"""
 
 class Game:
     def __init__(self):
@@ -85,6 +89,8 @@ class Game:
 
             last_loc = loc
 
+            self.get_room_objects(loc_desc)
+
             documents = self.traversal_retriever.invoke(loc_desc, config={})
             print("RAG results:", documents)
 
@@ -105,7 +111,7 @@ class Game:
 
             score_tracker.update(info, start_time, end_time)
             score_tracker.get_stats(self.env, info)
-            
+
             # time.sleep(1)
 
             #break
@@ -143,14 +149,37 @@ class Game:
         self.vector_store.add_documents([room.to_document()])
 
 
+    def get_room_objects(self, loc_desc: str):
+        prompt = ROOM_OBJECT_PROMPT.format(loc_desc)
+
+        response = self.model.invoke([HumanMessage(prompt)])
+        content = response.content
+        assert isinstance(content, str)
+
+        items = [
+            x.strip().lower()
+            for x in content.split(",")
+        ]
+        item_descs = {}
+
+        state = self.env.get_state()
+        for item in items:
+            item_desc, _, _, _ = self.env.step("examine " + item)
+            if not item_desc.startswith("I don\'t know the word"):
+                item_descs[item] = item_desc.strip()
+            self.env.set_state(state)
+
+        print("ROOM OBJECTS", item_descs)
+
+
     def get_prompt(self, documents, obs: str, prev_command: str, loc_desc: str):
         #room_desc, _, _, _ = self.env.step("look")
         inv_desc, _, _, _ = self.env.step("inventory")
-        
+
         ROOM_DESC_TEMPLATE = '## Description for "{}" location:\n{}'
-        
+
         knowledge = '\n'.join(ROOM_DESC_TEMPLATE.format(x.metadata['name'], x.page_content) for x in documents)
-        
+
         valid_actions = ', '.join(self.env.get_valid_actions())
 
         return PROMPT_TEMPLATE.format(knowledge, loc_desc.strip(), inv_desc.strip(), prev_command, obs.strip(), valid_actions)
