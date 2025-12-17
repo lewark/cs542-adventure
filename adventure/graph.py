@@ -23,6 +23,7 @@ class RoomNode:
     description: str
     exits: dict[str, Optional["RoomNode"]]
     visited: bool
+    objects: list["RoomObject"]
 
     def __init__(self, model: Room, num: int):
         self.exits = {}
@@ -62,6 +63,23 @@ class RoomNode:
 
     def get_doc_id(self) -> str:
         return str(self.num)
+
+
+class RoomObject:
+    def __init__(self, name: str, description: str, room: RoomNode):
+        self.name = name
+        self.description = description
+        self.room = room
+
+    def get_doc_id(self) -> str:
+        room_id = self.room.get_doc_id()
+        doc_id = room_id + self.name
+        return doc_id
+
+    def to_document(self) -> Document:
+        doc_id = self.get_doc_id()
+        room_id = self.room.get_doc_id()
+        return Document(id=doc_id, page_content=self.description, metadata={"name": self.name, "room_id": room_id})
 
 
 RoomDict = dict[int, RoomNode]

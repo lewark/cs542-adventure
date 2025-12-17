@@ -12,9 +12,8 @@ from jericho import FrotzEnv, ZObject
 from adventure.metrics import ScoreTracker
 from adventure.pathfind import warp_command
 from adventure.schema import Room
-from adventure.structured_bot import extract_room_model, update_room_model
 
-from .graph import NAMES_FROM_DESCRIPTIONS, RoomDict, RoomNode, discover_exits, update_exits
+from .graph import NAMES_FROM_DESCRIPTIONS, RoomDict, RoomNode, RoomObject, discover_exits, update_exits
 
 CHAT_MODEL = "llama3.2:3b"
 EMBEDDING_MODEL = "nomic-embed-text"
@@ -58,7 +57,7 @@ class Game:
         # https://docs.langchain.com/oss/python/integrations/retrievers/graph_rag#inmemory
         self.traversal_retriever = GraphRetriever(
             store=self.vector_store,
-            edges=[("exits", "$id")],
+            edges=[("exits", "$id"), ("room_id", "$id")],
             strategy=Eager(select_k=5, start_k=1, max_depth=2)
         )
 
@@ -89,7 +88,7 @@ class Game:
 
             last_loc = loc
 
-            self.get_room_objects(loc_desc)
+            self.get_room_objects(loc, loc_desc)
 
             documents = self.traversal_retriever.invoke(loc_desc, config={})
             print("RAG results:", documents)
@@ -149,7 +148,8 @@ class Game:
         self.vector_store.add_documents([room.to_document()])
 
 
-    def get_room_objects(self, loc_desc: str):
+    def get_room_objects(self, loc: ZObject, loc_desc: str):
+        room = self.rooms[loc.num]
         prompt = ROOM_OBJECT_PROMPT.format(loc_desc)
 
         response = self.model.invoke([HumanMessage(prompt)])
@@ -169,7 +169,12 @@ class Game:
                 item_descs[item] = item_desc.strip()
             self.env.set_state(state)
 
-        print("ROOM OBJECTS", item_descs)
+        ids_to_remove = [obj.get_doc_id() for obj in room.objects]
+        if len(ids_to_remove) > 0:
+            self.vector_store.delete(ids_to_remove)
+
+        room.objects = [RoomObject(name, desc, room) for name, desc in item_descs.items()]
+        self.vector_store.add_documents([obj.to_document() for obj in room.objects])
 
 
     def get_prompt(self, documents, obs: str, prev_command: str, loc_desc: str):
