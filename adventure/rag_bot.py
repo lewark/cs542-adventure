@@ -62,7 +62,7 @@ class Game:
 
         self.rooms: RoomDict = {}
 
-    def run_game(self):
+    def run_game(self, max_steps=10):
         obs, info = self.env.reset()
         #print(obs, info)
 
@@ -107,10 +107,10 @@ class Game:
             score_tracker.get_stats(self.env, info)
             
             # time.sleep(1)
+            if info['moves'] > max_steps:
+                break
 
-            #break
-
-        env.close()
+        self.env.close()
             #room_model = extract_room_mode
 
 
