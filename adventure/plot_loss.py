@@ -16,7 +16,7 @@ with open(filename, "r") as in_file:
         loss.append(doc["loss"])
 
 plt.plot(loss)
-plt.xlabel("Epoch")
+plt.xlabel("Step")
 plt.ylabel("Loss")
 plt.title(title)
 plt.savefig(out_filename)
