@@ -79,7 +79,7 @@ def generate_response(model, tokenizer, messages):
 if __name__ == "__main__":
     from .model import load_model
     from unsloth import FastLanguageModel
-    model, tokenizer = load_model("grpo_model_2", "llama-3.2")
+    model, tokenizer = load_model("grpo_model_result", "llama-3.2")
     FastLanguageModel.for_inference(model)
 
     run_game(model, tokenizer, "./z-machine-games-master/jericho-game-suite/zork1.z5", 100, history=10)

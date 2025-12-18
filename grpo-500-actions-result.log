@@ -1,0 +1,619 @@
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+INFO 12-17 18:29:47 [__init__.py:216] Automatically detected platform cuda.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+INFO 12-17 18:29:50 [vllm_utils.py:702] Unsloth: Patching vLLM v1 graph capture
+INFO 12-17 18:29:50 [vllm_utils.py:732] Unsloth: Patching vLLM v0 graph capture
+==((====))==  Unsloth 2025.12.1: Fast Llama patching. Transformers: 4.57.3. vLLM: 0.10.2.
+   \\   /|    NVIDIA RTX 4000 Ada Generation. Num GPUs = 1. Max memory: 19.548 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.8.0+cu128. CUDA: 8.9. CUDA Toolkit: 12.8. Triton: 3.4.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.32.post1. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: vLLM loading unsloth/llama-3.2-3b-instruct-bnb-4bit with actual GPU utilization = 49.44%
+Unsloth: Your GPU has CUDA compute capability 8.9 with VRAM = 19.55 GB.
+Unsloth: Using conservativeness = 1.0. Chunked prefill tokens = 2048. Num Sequences = 32.
+Unsloth: vLLM's KV Cache can use up to 7.11 GB. Also swap space = 6 GB.
+Unsloth: Disabling `disable_cascade_attn` in vLLM to allow for better on policy RL!
+Unsloth: Not an error, but `device` is not supported in vLLM. Skipping.
+INFO 12-17 18:29:53 [utils.py:328] non-default args: {'load_format': 'bitsandbytes', 'dtype': torch.bfloat16, 'seed': 0, 'max_model_len': 2048, 'enable_prefix_caching': True, 'disable_cascade_attn': True, 'swap_space': 6, 'gpu_memory_utilization': 0.49444859013547565, 'max_num_batched_tokens': 4096, 'max_num_seqs': 32, 'max_logprobs': 0, 'disable_log_stats': True, 'quantization': 'bitsandbytes', 'enable_lora': True, 'max_lora_rank': 64, 'enable_chunked_prefill': True, 'compilation_config': {"level":3,"debug_dump_path":"","cache_dir":"","backend":"inductor","custom_ops":[],"splitting_ops":null,"use_inductor":true,"compile_sizes":null,"inductor_compile_config":{"epilogue_fusion":true,"max_autotune":false,"shape_padding":true,"trace.enabled":false,"triton.cudagraphs":true,"debug":false,"dce":true,"memory_planning":true,"coordinate_descent_tuning":false,"trace.graph_diagram":false,"compile_threads":32,"group_fusion":true,"disable_progress":false,"verbose_progress":true,"triton.multi_kernel":0,"triton.use_block_ptr":true,"triton.enable_persistent_tma_matmul":true,"triton.autotune_at_compile_time":false,"triton.cooperative_reductions":false,"cuda.compile_opt_level":"-O2","cuda.enable_cuda_lto":true,"combo_kernels":false,"benchmark_combo_kernel":true,"combo_kernel_foreach_dynamic_shapes":true,"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":null,"cudagraph_copy_inputs":false,"full_cuda_graph":false,"pass_config":{},"max_capture_size":null,"local_cache_dir":null}, 'model': 'unsloth/llama-3.2-3b-instruct-bnb-4bit'}
+INFO 12-17 18:29:57 [__init__.py:742] Resolved architecture: LlamaForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO 12-17 18:29:57 [__init__.py:1815] Using max model len 2048
+WARNING 12-17 18:29:57 [_ipex_ops.py:16] Import error msg: No module named 'intel_extension_for_pytorch'
+INFO 12-17 18:29:58 [scheduler.py:222] Chunked prefill is enabled with max_num_batched_tokens=4096.
+WARNING 12-17 18:29:58 [lora.py:92] `lora_extra_vocab_size` is deprecated and will be removed in v0.12.0. Additional vocabulary support for LoRA adapters is being phased out.
+Unsloth: vLLM Bitsandbytes config using kwargs = {'load_in_8bit': False, 'load_in_4bit': True, 'bnb_4bit_compute_dtype': 'bfloat16', 'bnb_4bit_quant_storage': 'uint8', 'bnb_4bit_quant_type': 'nf4', 'bnb_4bit_use_double_quant': True, 'llm_int8_enable_fp32_cpu_offload': False, 'llm_int8_has_fp16_weight': False, 'llm_int8_skip_modules': ['lm_head', 'multi_modal_projector', 'merger', 'modality_projection'], 'llm_int8_threshold': 6.0}
+INFO 12-17 18:29:59 [core.py:76] Initializing a V1 LLM engine (v0.10.2) with config: model='unsloth/llama-3.2-3b-instruct-bnb-4bit', speculative_config=None, tokenizer='unsloth/llama-3.2-3b-instruct-bnb-4bit', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=2048, download_dir=None, load_format=bitsandbytes, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=False, quantization=bitsandbytes, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, decoding_config=DecodingConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_backend=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=unsloth/llama-3.2-3b-instruct-bnb-4bit, enable_prefix_caching=True, chunked_prefill_enabled=True, use_async_output_proc=True, pooler_config=None, compilation_config={"level":3,"debug_dump_path":"","cache_dir":"","backend":"inductor","custom_ops":[],"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output","vllm.mamba_mixer2","vllm.mamba_mixer","vllm.short_conv","vllm.linear_attention","vllm.plamo2_mamba_mixer","vllm.gdn_attention"],"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"epilogue_fusion":true,"max_autotune":false,"shape_padding":true,"trace.enabled":false,"triton.cudagraphs":true,"debug":false,"dce":true,"memory_planning":true,"coordinate_descent_tuning":false,"trace.graph_diagram":false,"compile_threads":32,"group_fusion":true,"disable_progress":false,"verbose_progress":true,"triton.multi_kernel":0,"triton.use_block_ptr":true,"triton.enable_persistent_tma_matmul":true,"triton.autotune_at_compile_time":false,"triton.cooperative_reductions":false,"cuda.compile_opt_level":"-O2","cuda.enable_cuda_lto":true,"combo_kernels":false,"benchmark_combo_kernel":true,"combo_kernel_foreach_dynamic_shapes":true,"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":[64,56,48,40,32,24,16,8,4,2,1],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"pass_config":{},"max_capture_size":64,"local_cache_dir":null}
+[W1217 18:29:59.903526373 ProcessGroupNCCL.cpp:981] Warning: TORCH_NCCL_AVOID_RECORD_STREAMS is the default now, this environment variable is thus deprecated. (function operator())
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+INFO 12-17 18:29:59 [parallel_state.py:1165] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+WARNING 12-17 18:29:59 [topk_topp_sampler.py:69] FlashInfer is not available. Falling back to the PyTorch-native implementation of top-p & top-k sampling. For the best performance, please install FlashInfer.
+INFO 12-17 18:29:59 [gpu_model_runner.py:2338] Starting to load model unsloth/llama-3.2-3b-instruct-bnb-4bit...
+INFO 12-17 18:30:00 [gpu_model_runner.py:2370] Loading model from scratch...
+INFO 12-17 18:30:00 [cuda.py:362] Using Flash Attention backend on V1 engine.
+INFO 12-17 18:30:00 [bitsandbytes_loader.py:758] Loading weights with BitsAndBytes quantization. May take a while ...
+INFO 12-17 18:30:00 [weight_utils.py:348] Using model weights format ['*.safetensors']
+INFO 12-17 18:30:00 [weight_utils.py:406] No model.safetensors.index.json found in remote.
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00, 92.37it/s]
+
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  4.45it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  4.45it/s]
+
+INFO 12-17 18:30:01 [punica_selector.py:19] Using PunicaWrapperGPU.
+INFO 12-17 18:30:01 [gpu_model_runner.py:2392] Model loading took 2.3519 GiB and 1.029228 seconds
+INFO 12-17 18:30:05 [backends.py:539] Using cache directory: /s/chopin/a/grad/elewark/.cache/vllm/torch_compile_cache/dc2c8eddc4/rank_0_0/backbone for vLLM's torch.compile
+INFO 12-17 18:30:05 [backends.py:550] Dynamo bytecode transform time: 3.49 s
+INFO 12-17 18:30:07 [backends.py:161] Directly load the compiled graph(s) for dynamic shape from the cache, took 1.159 s
+INFO 12-17 18:30:08 [monitor.py:34] torch.compile takes 3.49 s in total
+INFO 12-17 18:30:09 [gpu_worker.py:298] Available KV cache memory: 6.91 GiB
+INFO 12-17 18:30:09 [kv_cache_utils.py:864] GPU KV cache size: 64,640 tokens
+INFO 12-17 18:30:09 [kv_cache_utils.py:868] Maximum concurrency for 2,048 tokens per request: 31.56x
+INFO 12-17 18:30:09 [vllm_utils.py:707] Unsloth: Running patched vLLM v1 `capture_model`.
+Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/11 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   9%|▉         | 1/11 [00:00<00:01,  7.65it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  27%|██▋       | 3/11 [00:00<00:00, 10.33it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  45%|████▌     | 5/11 [00:00<00:00, 11.86it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  64%|██████▎   | 7/11 [00:00<00:00, 12.56it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  82%|████████▏ | 9/11 [00:00<00:00, 13.00it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 12.98it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 12.34it/s]
+Capturing CUDA graphs (decode, FULL):   0%|          | 0/7 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):  14%|█▍        | 1/7 [00:00<00:00,  8.18it/s]Capturing CUDA graphs (decode, FULL):  43%|████▎     | 3/7 [00:00<00:00, 11.47it/s]Capturing CUDA graphs (decode, FULL):  71%|███████▏  | 5/7 [00:00<00:00, 12.60it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 7/7 [00:00<00:00, 13.99it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 7/7 [00:00<00:00, 13.02it/s]
+INFO 12-17 18:30:10 [gpu_model_runner.py:3118] Graph capturing finished in 1 secs, took 0.35 GiB
+INFO 12-17 18:30:10 [vllm_utils.py:714] Unsloth: Patched vLLM v1 graph capture finished in 1 secs.
+INFO 12-17 18:30:11 [gpu_worker.py:391] Free memory on device (19.31/19.55 GiB) on startup. Desired GPU memory utilization is (0.49444859013547565, 9.67 GiB). Actual usage is 2.35 GiB for weight, 0.39 GiB for peak activation, 0.02 GiB for non-torch memory, and 0.35 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=6881828352` to fit into requested memory, or `--kv-cache-memory=17234976256` to fully utilize gpu memory. Current kv cache memory in use is 7414504960 bytes.
+INFO 12-17 18:30:11 [core.py:218] init engine (profile, create kv cache, warmup model) took 9.71 seconds
+INFO 12-17 18:30:12 [llm.py:295] Supported_tasks: ('generate',)
+INFO 12-17 18:30:12 [__init__.py:36] No IOProcessor plugins requested by the model
+Some weights of LlamaForCausalLM were not initialized from the model checkpoint at unsloth/llama-3.2-3b-instruct-bnb-4bit and are newly initialized: ['lm_head.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Unsloth 2025.12.1 patched 28 layers with 28 QKV layers, 28 O layers and 28 MLP layers.
+Unsloth: Already have LoRA adapters! We shall skip this step.
+Unsloth: Just some info: will skip parsing ['norm2', 'layer_norm1', 'attention_norm', 'input_layernorm', 'post_attention_layernorm', 'norm1', 'pre_feedforward_layernorm', 'q_norm', 'ffn_norm', 'norm', 'post_layernorm', 'layer_norm2', 'k_norm', 'post_feedforward_layernorm']
+Performing substitution for additional_keys=set()
+Unsloth: Just some info: will skip parsing ['norm2', 'layer_norm1', 'cross_attn_input_layernorm', 'attention_norm', 'input_layernorm', 'cross_attn_post_attention_layernorm', 'post_attention_layernorm', 'norm1', 'pre_feedforward_layernorm', 'q_norm', 'ffn_norm', 'norm', 'post_layernorm', 'layer_norm2', 'k_norm', 'post_feedforward_layernorm']
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726
+
+West of House
+You are standing in an open field west of a white house, with a boarded front door.
+There is a small mailbox here.
+
+
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+Unsloth: Input IDs of shape torch.Size([1, 2105]) with length 2105 > the model's max sequence length of 2048.
+We shall truncate it ourselves. It's imperative if you correct this issue first.
+/s/chopin/a/grad/elewark/cs542/cs542-adventure/venv/lib/python3.13/site-packages/jericho/jericho.py:484: TruncatedInputActionWarning: Once converted to bytes, actions should have less than 198 characters. Action 'door
+- throw sack at rug
+- throw sack at egg
+- throw rope at egg
+- throw knife at egg
+- throw garlic at egg
+- throw egg at door
+- throw lunch at egg
+- put all in sack
+- open egg with lantern
+- eat lunch' was truncated to 'door
+- throw sack at rug
+- throw sack at egg
+- throw rope at egg
+- throw knife at egg
+- throw garlic at egg
+- throw egg at door
+- throw lunch at egg
+- put all in sack
+- open egg with lantern
+- eat l'.
+  warnings.warn(msg, TruncatedInputActionWarning)
+> N
+North of House
+You are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.
+
+
+> N
+Forest Path
+This is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.
+
+
+> U
+Up a Tree
+You are about 10 feet above the ground nestled among some large branches. The nearest branch above you is above your reach.
+Beside you on the branch is a small bird's nest.
+In the bird's nest is a large egg encrusted with precious jewels, apparently scavenged by a childless songbird. The egg is covered with fine gold inlay, and ornamented in lapis lazuli and mother-of-pearl. Unlike most eggs, this one is hinged and closed with a delicate looking clasp. The egg appears extremely fragile.
+
+
+> Get egg
+Taken.
+
+
+> D
+Forest Path
+
+
+> S
+North of House
+
+
+> E
+Behind House
+You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.
+
+
+> Open window
+With great effort, you open the window far enough to allow entry.
+
+
+> W
+Kitchen
+You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.
+On the table is an elongated brown sack, smelling of hot peppers.
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+
+
+> Open sack
+Opening the brown sack reveals a lunch, and a clove of garlic.
+
+
+> Get garlic
+Taken.
+
+
+> W
+Living Room
+You are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room.
+Above the trophy case hangs an elvish sword of great antiquity.
+A battery-powered brass lantern is on the trophy case.
+
+
+> Get lamp
+Taken.
+
+
+> E
+Kitchen
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+There is a brown sack here.
+The brown sack contains:
+  A lunch
+
+
+> U
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+> Light lamp
+The brass lantern is now on.
+
+Attic
+This is the attic. The only exit is a stairway leading down.
+A large coil of rope is lying in the corner.
+On a table is a nasty-looking knife.
+
+
+> Get rope
+Taken.
+
+
+> Get knife
+Taken.
+
+
+> D
+Kitchen
+A bottle is sitting on the table.
+The glass bottle contains:
+  A quantity of water
+There is a brown sack here.
+The brown sack contains:
+  A lunch
+
+
+> Douse lamp
+The brass lantern is now off.
+
+
+> Get water
+You can't reach something that's inside a closed container.
+
+
+> Get sack
+Taken.
+
+
+> W
+Living Room
+Above the trophy case hangs an elvish sword of great antiquity.
+
+
+> Get sword
+Taken.
+
+
+> door
+- throw sack at rug
+- throw sack at egg
+- throw rope at egg
+- throw knife at egg
+- throw garlic at egg
+- throw egg at door
+- throw lunch at egg
+- put all in sack
+- open egg with lantern
+- eat lunch
+There was no verb in that sentence!
+
+
+> Drop sack
+Dropped.
+
+
+> Move sword
+You aren't an accomplished enough juggler.
+
+
+> Move rug
+With a great effort, the rug is moved to one side of the room, revealing the dusty cover of a closed trap door.
+
+
+> Open trapdoor
+The door reluctantly opens to reveal a rickety staircase descending into darkness.
+
+
+> D
+You have moved into a dark place.
+The trap door crashes shut, and you hear someone barring it.
+
+It is pitch black. You are likely to be eaten by a grue.
+Your sword is glowing with a faint blue glow.
+
+
+> Light lamp
+The brass lantern is now on.
+
+Cellar
+You are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable.
+
+
+> N
+The Troll Room
+This is a small room with passages to the east and south and a forbidding hole leading west. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.
+A nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.
+Your sword has begun to glow very brightly.
+
+
+> Kill troll with sword
+The fatal blow strikes the troll square in the heart:  He dies.
+Almost as soon as the troll breathes his last breath, a cloud of sinister black fog envelops him, and when the fog lifts, the carcass has disappeared.
+Your sword is no longer glowing.
+
+
+> Drop egg
+Dropped.
+
+
+> E
+East-West Passage
+This is a narrow east-west passageway. There is a narrow stairway leading down at the north end of the room.
+
+
+> E
+Round Room
+This is a circular stone room with passages in all directions. Several of them have unfortunately been blocked by cave-ins.
+
+
+> Se
+Engravings Cave
+You have entered a low cave with passages leading northwest and east.
+There are old engravings on the walls here.
+
+
+> E
+Dome Room
+You are at the periphery of a large dome, which forms the ceiling of another room below. Protecting you from a precipitous drop is a wooden railing which circles the dome.
+
+
+> Tie rope to railing
+The rope drops over the side and comes within ten feet of the floor.
+
+
+> D
+Torch Room
+This is a large room with a prominent doorway leading to a down staircase. Above you is a large dome. Up around the edge of the dome (20 feet up) is a wooden railing. In the center of the room sits a white marble pedestal.
+A piece of rope descends from the railing above, ending some five feet above your head.
+Sitting on the pedestal is a flaming torch, made of ivory.
+
+
+> Douse lamp
+The brass lantern is now off.
+
+
+> Get torch
+Taken.
+
+
+> D
+Temple
+This is the north end of a large temple. On the east wall is an ancient inscription, probably a prayer in a long-forgotten language. Below the prayer is a staircase leading down. The west wall is solid granite. The exit to the north end of the room is through huge marble pillars.
+There is a brass bell here.
+
+
+> S
+Altar
+This is the south end of a large temple. In front of you is what appears to be an altar. In one corner is a small hole in the floor which leads into darkness. You probably could not get back up it.
+On the two ends of the altar are burning candles.
+On the altar is a large black book, open to page 569.
+
+
+> Drop sword
+Dropped.
+
+
+> Get book
+Taken.
+
+
+> N
+Temple
+There is a brass bell here.
+
+
+> Get bell
+Taken.
+
+
+> E
+Egyptian Room
+This is a room which looks like an Egyptian tomb. There is an ascending staircase to the west.
+The solid-gold coffin used for the burial of Ramses II is here.
+
+
+> Open coffin
+The gold coffin opens.
+A sceptre, possibly that of ancient Egypt itself, is in the coffin. The sceptre is ornamented with colored enamel, and tapers to a sharp point.
+
+
+> Get sceptre
+Taken.
+
+
+> W
+Temple
+
+
+> S
+Altar
+On the two ends of the altar are burning candles.
+There is a sword here.
+
+
+> Get sword
+Taken.
+
+
+> N
+Temple
+
+
+> S
+Altar
+On the two ends of the altar are burning candles.
+
+
+> Drop sword
+Dropped.
+
+
+> Get candles
+Taken.
+
+
+> Douse candles
+The flame is extinguished.
+
+
+> N
+Temple
+
+
+> S
+Altar
+There is a sword here.
+
+
+> Drop candles
+Dropped.
+
+
+> Get sword
+Taken.
+
+
+> N
+Temple
+
+
+> S
+Altar
+There is a pair of candles here.
+
+
+> Drop book
+Dropped.
+
+
+> Get candles
+Taken.
+
+
+> N
+Temple
+
+
+> E
+Egyptian Room
+The solid-gold coffin used for the burial of Ramses II is here.
+
+
+> Get candle
+You already have that!
+
+
+> W
+Temple
+
+
+> S
+Altar
+There is a black book here.
+
+
+> Drop all
+pair of candles: Dropped.
+sword: Dropped.
+sceptre: Dropped.
+brass bell: Dropped.
+torch: Dropped.
+nasty knife: Dropped.
+brass lantern: Dropped.
+clove of garlic: Dropped.
+
+
+> Get book
+Taken.
+
+
+> N
+Temple
+
+
+> S
+Altar
+There is a clove of garlic here.
+There is a brass lantern (battery-powered) here.
+There is a nasty knife here.
+There is a torch here (providing light).
+There is a brass bell here.
+An ornamented sceptre, tapering to a sharp point, is here.
+There is a sword here.
+There is a pair of candles here.
+
+
+> Get all
+clove of garlic: Taken.
+brass lantern: Taken.
+nasty knife: Taken.
+torch: Taken.
+brass bell: Taken.
+sceptre: Taken.
+sword: Taken.
+pair of candles: Your load is too heavy.
+
+
+> Drop all
+sword: Dropped.
+sceptre: Dropped.
+brass bell: Dropped.
+torch: Dropped.
+nasty knife: Dropped.
+brass lantern: Dropped.
+clove of garlic: Dropped.
+black book: Dropped.
+
+
+> N
+Temple
+
+
+> E
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+> W
+Temple
+
+
+> S
+Altar
+There is a black book here.
+There is a clove of garlic here.
+There is a brass lantern (battery-powered) here.
+There is a nasty knife here.
+There is a torch here (providing light).
+There is a brass bell here.
+An ornamented sceptre, tapering to a sharp point, is here.
+There is a sword here.
+There is a pair of candles here.
+
+
+> Get book
+Taken.
+
+
+> Get candles
+Taken.
+
+
+> D
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+> Read book
+It is impossible to read in the dark.
+
+
+> Light candles
+You should say what to light them with.
+
+
+> Light candles with torch
+It's too dark to see!
+
+
+> D
+Entrance to Hades
+You are outside a large gateway, on which is inscribed
+
+  Abandon every hope all ye who enter here!
+
+The gate is open; through it you can see a desolation, with a pile of mangled bodies in one corner. Thousands of voices, lamenting some hideous fate, can be heard.
+The way through the gate is barred by evil spirits, who jeer at your attempts to pass.
+
+
+> D
+You can't go that way.
+
+
+> U
+You have moved into a dark place.
+It is pitch black. You are likely to be eaten by a grue.
+
+
+> N
+Mirror Room
+You are in a large square room with tall ceilings. On the south wall is an enormous mirror which fills the entire wall. There are exits on the other three sides of the room.
+
+
+> Touch mirror
+You have moved into a dark place.
+There is a rumble from deep within the earth and the room shakes.
+
+
+> E
+Oh, no! A lurking grue slithered into the room and devoured you!
+ 
+   ****  You have died  **** 
+
+As you take your last breath, you feel relieved of your burdens. The feeling passes as you find yourself before the gates of Hell, where the spirits jeer at you and deny you entry. Your senses are disturbed. The objects in the dungeon appear indistinct, bleached of color, even unreal.
+
+Entrance to Hades
+
+
+{'moves': 92, 'unique_rooms': 21, 'unique_hashes': 84, 'unique_items': 12, 'score': 53, 'max_score': 350, 'avg_retries': 11.75, 'avg_generate_time': 0.19535895357740687}
+[rank0]:[W1217 18:30:39.719959163 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

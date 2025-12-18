@@ -2,6 +2,7 @@ import jericho
 from datasets import Dataset
 
 from .model import load_model, save_model
+from .prompt import get_prompt
 
 
 def make_grpo_dataset(env: jericho.FrotzEnv, history: int = 10):
@@ -15,12 +16,14 @@ def make_grpo_dataset(env: jericho.FrotzEnv, history: int = 10):
     hashes = []
     
     obs = initial_obs
+    done = False
     for step in walkthrough:
         if len(messages) > history:
             messages.pop(0)
             messages.pop(0)
 
-        messages.append({"role": "user", "content": obs})
+        prompt = get_prompt(env, obs, done, include_actions=True)
+        messages.append({"role": "user", "content": prompt})
         prompts.append(list(messages))
         
         state_hash = env.get_world_state_hash()
@@ -139,7 +142,7 @@ def make_grpo_trainer(model, tokenizer, grpo_dataset, reward_func):
 
 
 if __name__ == "__main__":
-    model, tokenizer = load_model("lora_model", "llama-3.2")
+    model, tokenizer = load_model("lora_model_result", "llama-3.2")
     env_file = "./z-machine-games-master/jericho-game-suite/zork1.z5"
     
     env = jericho.FrotzEnv(env_file)
@@ -149,4 +152,4 @@ if __name__ == "__main__":
     reward_func = get_reward_func(env_file)
     grpo_trainer = make_grpo_trainer(model, tokenizer, grpo_dataset, reward_func)
     grpo_trainer.train()
-    save_model(model, tokenizer, "grpo_model_2")
+    save_model(model, tokenizer, "grpo_model_result")
